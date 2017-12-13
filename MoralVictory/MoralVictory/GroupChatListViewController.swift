@@ -144,7 +144,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 
         cell.profileImageView.image = Talk.images[talkItem.userId] // UIImage(named: "profile-pictures")
         cell.talkLabel.text = talkItem.userName
-        cell.backgroundColor = UIColor.green
+        cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
         return cell
