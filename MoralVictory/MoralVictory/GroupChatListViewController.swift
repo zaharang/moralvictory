@@ -40,6 +40,8 @@ class GroupChatListCell: UITableViewCell {
 class GroupChatListViewController: UIViewController {
     
     var tableView:UITableView!
+
+    var talkList: [Talk]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +51,13 @@ class GroupChatListViewController: UIViewController {
         tableView.dataSource = self
         self.view.addSubview(tableView)
         tableView.register(GroupChatListCell.self, forCellReuseIdentifier: "GroupChatListCell")
-        
+
+        fetchData()
+
+    }
+
+    func fetchData(){
+        talkList = TalkDataHelper.shared.getTalkList()
         tableView.reloadData()
     }
 }
@@ -61,14 +69,18 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return talkList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = GroupChatListCell(style: .default, reuseIdentifier: "GroupChatListCell")
-        
+
+        guard let talkItem = talkList?[indexPath.row] else {
+            return cell
+        }
+
         cell.profileImageView.image = UIImage(named: "profile-pictures")
-        cell.talkLabel.text = "HelloWorld"
+        cell.talkLabel.text = talkItem.userName
         cell.backgroundColor = UIColor.green
         return cell
     }
