@@ -8,7 +8,8 @@
 
 import UIKit
 
-let topBarHeight = CGFloat(44)
+let topBarHeight = CGFloat(87)
+let bottomBarHeight = CGFloat(50)
 let imageViewSize = CGFloat(40)
 
 class GroupChatListCell: UITableViewCell {
@@ -20,8 +21,6 @@ class GroupChatListCell: UITableViewCell {
         
         self.contentView.addSubview(talkLabel)
         self.contentView.addSubview(profileImageView)
-        
-        print("\(self.frame)")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,16 +42,21 @@ class GroupChatListViewController: UIViewController {
     var talkList: [Talk]?
     
     var tableView:UITableView!
+    var bottomBarView:UIView!
     var topBarView:UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bottomBarView = UIImageView(image: UIImage(named: "bottom_bar"))
+        bottomBarView.frame = CGRect(x: 0, y: view.frame.height - bottomBarHeight, width: view.frame.width, height: bottomBarHeight)
+        self.view.addSubview(bottomBarView)
+        
         topBarView = UIImageView(image: UIImage(named: "navi_bar"))
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         self.view.addSubview(topBarView)
         
-        let tableViewFrame = CGRect(x: 0, y: topBarHeight, width: view.frame.width, height: view.frame.height - topBarHeight)
+        let tableViewFrame = CGRect(x: 0, y: topBarHeight, width: view.frame.width, height: view.frame.height - topBarHeight - bottomBarHeight)
         tableView = UITableView(frame: tableViewFrame, style: UITableViewStyle.plain)
         tableView.delegate = self
         tableView.dataSource = self
