@@ -22,7 +22,7 @@ protocol SwipeDelegate {
     func swipe(cell: UITableViewCell, direction: SwipeDirection)
 }
 
-class GroupChatListCell: UITableViewCell {
+class GroupChatListCell: UITableViewCell, Shakable {
     var delegate: SwipeDelegate?
 
     var talkLabel = UILabel()
@@ -33,6 +33,7 @@ class GroupChatListCell: UITableViewCell {
         
         self.contentView.addSubview(talkLabel)
         self.contentView.addSubview(profileImageView)
+        self.contentView.clipsToBounds = true
         addSwipeDelegate()
     }
     
@@ -71,6 +72,8 @@ class GroupChatListViewController: UIViewController {
     let HALF_HEIGHT = UIScreen.main.bounds.height / 2
 
     var talkList: [Talk]?
+
+    var ignoreLists: [Int] = []
     
     var tableView:UITableView!
     var bottomBarView:UIView!
@@ -109,18 +112,34 @@ class GroupChatListViewController: UIViewController {
         chatListView.autoPinEdge(toSuperviewEdge: .right)
         chatListView.autoSetDimension(.height, toSize: HALF_HEIGHT - 30)
         chatListView.closeFunction = closeTopView
+        chatListView.moveToIndex = moveToIndex
     }
 
-    func fetchData(){
+    func fetchData() {
         talkList = TalkDataHelper.shared.getTalkList()
         tableView.reloadData()
     }
 
-    func closeTopView(){
+    func closeTopView() {
         UIView.animate(withDuration: 0.2) { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.topChatListViewContraint?.constant = -strongSelf.HALF_HEIGHT
             strongSelf.view.layoutIfNeeded()
+        }
+    }
+
+    func moveToIndex(index: Int) {
+        let indexPath = IndexPath(row:index, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            self?.shakeCell(indexPath: indexPath)
+        }
+
+    }
+
+    func shakeCell(indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? GroupChatListCell {
+            cell.shake()
         }
     }
 }
@@ -129,6 +148,14 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let talkItem = talkList?[indexPath.row] else {
+            return 0
+        }
+
+        return ignoreLists.contains(talkItem.userId) ? 0 : 50
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -142,7 +169,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
             return cell
         }
 
-        cell.profileImageView.image = Talk.images[talkItem.userId] // UIImage(named: "profile-pictures")
+        cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
         cell.talkLabel.text = talkItem.userName
         cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
@@ -170,15 +197,18 @@ extension GroupChatListViewController: SwipeDelegate {
 
         let alertController = UIAlertController(title: "Ignore", message: "How much ignore msg from \(talkItem.userName)", preferredStyle: .actionSheet)
 
-        let lv1Button = UIAlertAction(title: "5 Minutes", style: .default, handler: { (action) -> Void in
+        let lv1Button = UIAlertAction(title: "5 Minutes", style: .default, handler: {[weak self] (action) -> Void in
+            self?.ignoreUser(id: talkItem.userId)
             print("Ok button tapped")
         })
 
-        let lv2Button = UIAlertAction(title: "1 Hour", style: .default, handler: { (action) -> Void in
+        let lv2Button = UIAlertAction(title: "1 Hour", style: .default, handler: {[weak self] (action) -> Void in
+            self?.ignoreUser(id: talkItem.userId)
             print("Ok button tapped")
         })
 
-        let foreverButton = UIAlertAction(title: "Forever", style: .destructive, handler: { (action) -> Void in
+        let foreverButton = UIAlertAction(title: "Forever", style: .destructive, handler: {[weak self] (action) -> Void in
+            self?.ignoreUser(id: talkItem.userId)
             print("Delete button tapped")
         })
 
@@ -199,9 +229,15 @@ extension GroupChatListViewController: SwipeDelegate {
         guard let talkItem = talkList?[index] else { return }
         chatListView.nick = talkItem.userName
         chatListView.profileImage = Talk.images[talkItem.userId]
+        chatListView.indexChatList = talkList?.filter { $0.userId == talkItem.userId }
         UIView.animate(withDuration: 0.5) { [weak self] in
             self?.topChatListViewContraint?.constant = 0
             self?.view.layoutIfNeeded()
         }
+    }
+
+    func ignoreUser(id: Int){
+        ignoreLists.append(id)
+        tableView.reloadData()
     }
 }
