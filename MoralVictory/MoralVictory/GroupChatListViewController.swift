@@ -25,13 +25,30 @@ protocol SwipeDelegate {
 class GroupChatListCell: UITableViewCell {
     var delegate: SwipeDelegate?
 
+    var talkLabelGroup = UIView()
+
+    lazy var talkLabelImageView: UIImageView = {
+        let imgView = UIImageView()
+
+        imgView.isUserInteractionEnabled = true
+        imgView.clipsToBounds = true
+        imgView.layer.cornerRadius = 6
+
+        return imgView
+    }()
     var talkLabel = UILabel()
     var profileImageView = UIImageView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.contentView.addSubview(talkLabel)
+//        self.contentView.addSubview(talkLabel)
+
+
+        talkLabelGroup.addSubview(talkLabelImageView)
+        talkLabelGroup.addSubview(talkLabel)
+        self.contentView.addSubview(talkLabelGroup)
+
         self.contentView.addSubview(profileImageView)
         addSwipeDelegate()
     }
@@ -46,7 +63,24 @@ class GroupChatListCell: UITableViewCell {
         
         profileImageView.frame = CGRect(x: 20, y: (frame.height - imageViewSize)/2, width: imageViewSize, height: imageViewSize)
         let textViewX = profileImageView.frame.origin.x + imageViewSize + 20
-        talkLabel.frame = CGRect(x: textViewX, y: 0, width: frame.width - textViewX, height: frame.height)
+
+        let imgGap = CGFloat(5)
+        talkLabelGroup.frame = CGRect(x: textViewX, y: 0, width: frame.width - textViewX, height: frame.height)
+        talkLabelImageView.frame = CGRect(x: 0, y: imgGap,
+                                          width: talkLabelGroup.frame.width,
+                                          height: talkLabelGroup.frame.height - imgGap*2)
+
+        let textGap = CGFloat(10)
+        talkLabel.frame = CGRect(x: textGap, y: textGap,
+                                 width: talkLabelGroup.frame.width - textGap*2,
+                                 height: talkLabelGroup.frame.height - textGap*2)
+
+        talkLabel.backgroundColor = UIColor(white: 0, alpha: 0)
+
+        let img = UIImage(named: "baloon_left")
+        let imgInsets : UIEdgeInsets = UIEdgeInsetsMake(20, 30, 20, 30)
+
+        talkLabelImageView.image = img?.resizableImage(withCapInsets: imgInsets, resizingMode: .stretch)
     }
 
     func addSwipeDelegate() {
@@ -97,6 +131,7 @@ class GroupChatListViewController: UIViewController {
         tableView = UITableView(frame: tableViewFrame, style: UITableViewStyle.plain)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         self.view.addSubview(tableView)
         tableView.register(GroupChatListCell.self, forCellReuseIdentifier: "GroupChatListCell")
 
@@ -133,6 +168,10 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return talkList?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
