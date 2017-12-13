@@ -14,6 +14,7 @@
 		1E9BA24C1FE144F80031D5BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E9BA24A1FE144F80031D5BB /* LaunchScreen.storyboard */; };
 		1E9BA2541FE14C0C0031D5BB /* GroupChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9BA2531FE14C0C0031D5BB /* GroupChatListViewController.swift */; };
 		20022DD731D38A83107BA15C /* Pods_MoralVictory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E489923390AAD0FE6A7793 /* Pods_MoralVictory.framework */; };
+		20C7FE5D1FE15F6C008A6A2A /* IndexChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C7FE5C1FE15F6C008A6A2A /* IndexChatView.swift */; };
 		20C9C1B71FE14E0D00440D30 /* TalkDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B61FE14E0D00440D30 /* TalkDataHelper.swift */; };
 		20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B91FE14E2300440D30 /* Talk.swift */; };
 		20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */; };
@@ -30,6 +31,7 @@
 		1E9BA24B1FE144F80031D5BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E9BA24D1FE144F80031D5BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E9BA2531FE14C0C0031D5BB /* GroupChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListViewController.swift; sourceTree = "<group>"; };
+		20C7FE5C1FE15F6C008A6A2A /* IndexChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexChatView.swift; sourceTree = "<group>"; };
 		20C9C1B61FE14E0D00440D30 /* TalkDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkDataHelper.swift; sourceTree = "<group>"; };
 		20C9C1B91FE14E2300440D30 /* Talk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Talk.swift; sourceTree = "<group>"; };
 		20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				1E9BA24A1FE144F80031D5BB /* LaunchScreen.storyboard */,
 				1E9BA24D1FE144F80031D5BB /* Info.plist */,
 				1E9BA2531FE14C0C0031D5BB /* GroupChatListViewController.swift */,
+				20C7FE5C1FE15F6C008A6A2A /* IndexChatView.swift */,
 			);
 			path = MoralVictory;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */,
 				1E9BA2441FE144F80031D5BB /* ViewController.swift in Sources */,
 				1E9BA2421FE144F80031D5BB /* AppDelegate.swift in Sources */,
+				20C7FE5D1FE15F6C008A6A2A /* IndexChatView.swift in Sources */,
 				20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
