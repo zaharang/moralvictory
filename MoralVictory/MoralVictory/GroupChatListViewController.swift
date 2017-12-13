@@ -79,7 +79,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
             return cell
         }
 
-        cell.profileImageView.image = UIImage(named: "profile-pictures")
+        cell.profileImageView.image = Talk.images[talkItem.userId] // UIImage(named: "profile-pictures")
         cell.talkLabel.text = talkItem.userName
         cell.backgroundColor = UIColor.green
         return cell
