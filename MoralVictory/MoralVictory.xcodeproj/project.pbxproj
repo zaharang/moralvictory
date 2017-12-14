@@ -18,6 +18,9 @@
 		20C9C1B71FE14E0D00440D30 /* TalkDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B61FE14E0D00440D30 /* TalkDataHelper.swift */; };
 		20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B91FE14E2300440D30 /* Talk.swift */; };
 		20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */; };
+		CE4836B41FE21698002A1F68 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */; };
+		CE4836B61FE21713002A1F68 /* GroupChatListCellMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */; };
+		CE4836B81FE21730002A1F68 /* GroupChatListCellOther.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		20C9C1B91FE14E2300440D30 /* Talk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Talk.swift; sourceTree = "<group>"; };
 		20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkViewController.swift; sourceTree = "<group>"; };
 		4113409C412577EE175EF869 /* Pods-MoralVictory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoralVictory.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoralVictory/Pods-MoralVictory.debug.xcconfig"; sourceTree = "<group>"; };
+		CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
+		CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellMe.swift; sourceTree = "<group>"; };
+		CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellOther.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,9 @@
 				1E9BA24A1FE144F80031D5BB /* LaunchScreen.storyboard */,
 				1E9BA24D1FE144F80031D5BB /* Info.plist */,
 				1E9BA2531FE14C0C0031D5BB /* GroupChatListViewController.swift */,
+				CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */,
+				CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */,
+				CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */,
 				20C7FE5C1FE15F6C008A6A2A /* IndexChatView.swift */,
 			);
 			path = MoralVictory;
@@ -270,8 +279,11 @@
 			files = (
 				1E9BA2541FE14C0C0031D5BB /* GroupChatListViewController.swift in Sources */,
 				20C9C1B71FE14E0D00440D30 /* TalkDataHelper.swift in Sources */,
+				CE4836B81FE21730002A1F68 /* GroupChatListCellOther.swift in Sources */,
 				20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */,
+				CE4836B41FE21698002A1F68 /* GroupChatListCell.swift in Sources */,
 				1E9BA2441FE144F80031D5BB /* ViewController.swift in Sources */,
+				CE4836B61FE21713002A1F68 /* GroupChatListCellMe.swift in Sources */,
 				1E9BA2421FE144F80031D5BB /* AppDelegate.swift in Sources */,
 				20C7FE5D1FE15F6C008A6A2A /* IndexChatView.swift in Sources */,
 				20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */,
@@ -413,11 +425,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PM348TP28S;
+				DEVELOPMENT_TEAM = Q9MD4C55H4;
 				INFOPLIST_FILE = MoralVictory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -430,11 +442,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PM348TP28S;
+				DEVELOPMENT_TEAM = Q9MD4C55H4;
 				INFOPLIST_FILE = MoralVictory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
