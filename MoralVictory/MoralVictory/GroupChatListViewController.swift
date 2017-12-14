@@ -104,6 +104,43 @@ class GroupChatListViewController: UIViewController {
         self.view.addSubview(topBarView)
     }
 
+    func sendPush() {
+
+        let parameters = ["to": "R990c1b1631bfe225de6524092cbabaaf",
+                                       "messages" :["type":"text","text":"Zaharang Great!!"]] as? [String:AnyObject]
+
+        let url = URL(string: "https://api.line.me/v2/bot/message/push")!
+        var request = URLRequest(url: url)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer {PexDk0ydhrSYAx/iI310o38PxThlsb7sJSj3Q5zD1+88l4ZEF5OuYwzhjanR9RObsRXE37P5g9js9rjo0/mb7RHmGgus4DnTQBTe89a9/Y5nn/17Y8rejd6VmUqVFxuCJhenP8REC0eUD+HBbtEdbAdB04t89/1O/w1cDnyilFU=}", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "POST"
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+                print (request.httpBody)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(error)")
+                return
+            }
+
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
+            }
+
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(responseString)")
+        }
+        task.resume()
+    }
+
+
     func fetchData() {
         talkList = TalkDataHelper.shared.getTalkList()
         tableView.reloadData()
@@ -146,7 +183,10 @@ extension GroupChatListViewController: UITextFieldDelegate {
         tableView.reloadData()
         
         textField.text = ""
-        
+
+
+        sendPush()
+
         return true
     }
 }
