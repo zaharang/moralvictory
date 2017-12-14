@@ -32,7 +32,12 @@ class GroupChatListViewController: UIViewController {
     
     var tableView:UITableView!
     var bottomBarView:UIView!
+    var bottomBarBackgroundImageView:UIImageView!
     var topBarView:UIImageView!
+    var textField:UITextField = {
+        let view = UITextField(frame: .zero)
+        return view
+    }()
 
     var topChatListViewContraint: NSLayoutConstraint?
 
@@ -71,9 +76,26 @@ class GroupChatListViewController: UIViewController {
         chatListView.closeFunction = closeTopView
         chatListView.moveToIndex = moveToIndex
 
-        bottomBarView = UIImageView(image: UIImage(named: "bottom_bar"))
-        bottomBarView.frame = CGRect(x: 0, y: view.frame.height - bottomBarHeight, width: view.frame.width, height: bottomBarHeight)
+        bottomBarView = UIView(frame: .zero)
         self.view.addSubview(bottomBarView)
+        bottomBarView.autoPinEdge(.left, to: .left, of: view)
+        bottomBarView.autoPinEdge(.right, to: .right, of: view)
+        bottomBarView.autoPinEdge(.bottom, to: .bottom, of: view)
+        bottomBarView.autoSetDimension(.height, toSize: bottomBarHeight)
+        
+        bottomBarBackgroundImageView = UIImageView(image: UIImage(named: "bottom_bar"))
+        self.bottomBarView.addSubview(bottomBarBackgroundImageView)
+        bottomBarView.autoPinEdge(.left, to: .left, of: view)
+        bottomBarView.autoPinEdge(.right, to: .right, of: view)
+        bottomBarView.autoPinEdge(.top, to: .top, of: bottomBarView)
+        bottomBarView.autoPinEdge(.bottom, to: .bottom, of: bottomBarView)
+        
+        self.bottomBarView.addSubview(textField)
+        textField.autoPinEdge(.left, to: .left, of: bottomBarView, withOffset: 140)
+        textField.autoPinEdge(.right, to: .right, of: bottomBarView, withOffset: -60)
+        textField.autoPinEdge(.top, to: .top, of: bottomBarView)
+        textField.autoPinEdge(.bottom, to: .bottom, of: bottomBarView)
+        textField.delegate = self
 
         topBarView = UIImageView(image: UIImage(named: "navi_bar"))
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
@@ -111,6 +133,10 @@ class GroupChatListViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+}
+
+extension GroupChatListViewController: UITextFieldDelegate {
+    
 }
 
 extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSource {

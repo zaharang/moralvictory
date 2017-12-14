@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import UserNotifications
+import IQKeyboardManager
 
 
 @UIApplicationMain
@@ -19,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let gcmMessageIDKey = "gcm.message_id"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        IQKeyboardManager.shared().isEnabled = true
+        
         FirebaseApp.configure()
 
         window = UIWindow(frame: UIScreen.main.bounds)
