@@ -27,6 +27,7 @@ class GroupChatListViewController: UIViewController {
     let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
 
     var talkList: [Talk]?
+    var ignoreTalkList: [Talk] = []
 
     var ignoreLists: [Int] = []
     
@@ -40,6 +41,17 @@ class GroupChatListViewController: UIViewController {
     }()
 
     var topChatListViewContraint: NSLayoutConstraint?
+    var leftChatListViewContraint: NSLayoutConstraint?
+
+    var topProfileConstraint: NSLayoutConstraint?
+    var leftProfileConstraint: NSLayoutConstraint?
+
+    lazy var profileAnimationView: UIImageView = {
+        let imageView = UIImageView()
+//        imageView.alpha = 0
+        imageView.image = Talk.images[0]
+        return imageView
+    }()
 
     lazy var chatListView: IndexChatView = {
         return IndexChatView(frame: .zero)
@@ -67,16 +79,23 @@ class GroupChatListViewController: UIViewController {
 
         fetchData()
 
+        view.addSubview(profileAnimationView)
+
+        profileAnimationView.autoSetDimensions(to: CGSize(width: imageViewSize, height: imageViewSize))
+        leftProfileConstraint = profileAnimationView.autoPinEdge(toSuperviewEdge: .left, withInset: 5)
+        topProfileConstraint = profileAnimationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
+
         self.view.addSubview(chatListView)
 
-        chatListView.autoPinEdge(.bottom, to: .top, of: tableView)
-        chatListView.autoPinEdge(toSuperviewEdge: .left)
-        chatListView.autoPinEdge(toSuperviewEdge: .right)
-        chatListView.autoSetDimension(.height, toSize: topChatListHeight)
+        chatListView.autoPinEdge(.bottom, to: .top, of: tableView, withOffset: 48)
+        leftChatListViewContraint = chatListView.autoPinEdge(toSuperviewEdge: .left, withInset: UIScreen.main.bounds.width)
+        chatListView.autoSetDimension(.width, toSize: UIScreen.main.bounds.width)
+        chatListView.autoPinEdge(toSuperviewEdge: .top, withInset: topBarHeight)
         chatListView.closeFunction = closeTopView
         chatListView.moveToIndex = moveToIndex
 
         bottomBarView = UIView(frame: .zero)
+
         self.view.addSubview(bottomBarView)
         bottomBarView.autoPinEdge(.left, to: .left, of: view)
         bottomBarView.autoPinEdge(.right, to: .right, of: view)
@@ -100,6 +119,8 @@ class GroupChatListViewController: UIViewController {
         topBarView = UIImageView(image: UIImage(named: "navi_bar"))
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         self.view.addSubview(topBarView)
+
+
     }
 
     func sendPush() {
@@ -146,11 +167,14 @@ class GroupChatListViewController: UIViewController {
     }
 
     func closeTopView() {
-        UIView.animate(withDuration: 0.2) { [weak self] in
+        UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.topChatListViewContraint?.constant = topBarHeight
             strongSelf.view.layoutIfNeeded()
-        }
+        }, completion: { [weak self] _ in
+            self?.leftChatListViewContraint?.constant = UIScreen.main.bounds.width
+            self?.view.layoutIfNeeded()
+        })
     }
 
     func moveToIndex(index: Int) {
@@ -168,13 +192,35 @@ class GroupChatListViewController: UIViewController {
         }
     }
 
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+
     
     private func scrollToBottom() {
         let indexPath = IndexPath(row: (talkList?.count ?? 0) - 1 , section: 0)
         tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+    }
+
+    func startSlideAnimation(index: Int){
+        if let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? GroupChatListCell {
+            let offsetY = cell.frame.origin.y + cell.profileImageView.frame.origin.y - tableView.contentOffset.y + topBarHeight
+
+            topProfileConstraint?.constant = offsetY
+            leftProfileConstraint?.constant = 10
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
+                    self?.leftProfileConstraint?.constant = UIScreen.main.bounds.width
+                    self?.view.layoutIfNeeded()
+                    }, completion: {[weak self] _ in
+                        self?.throwInAnimation()
+                })
+            })
+
+        }
+
     }
 }
 
@@ -210,6 +256,7 @@ extension GroupChatListViewController: UITextFieldDelegate {
         sendPush()
 
         return true
+
     }
 }
 
@@ -325,17 +372,34 @@ extension GroupChatListViewController: SwipeDelegate {
         chatListView.nick = talkItem.userName
         chatListView.profileImage = Talk.images[talkItem.userId]
         chatListView.indexChatList = talkList?.filter { $0.userId == talkItem.userId }
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.moveDownChatList()
+
+        profileAnimationView.image = Talk.images[talkItem.userId]
+        startSlideAnimation(index: index)
+    }
+
+    func throwInAnimation(){
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+            self?.moveLeftChatList()
+        }) { [weak self] _ in
+           self?.moveDownList()
         }
     }
 
-    func moveDownChatList(){
-        topChatListViewContraint?.constant = topBarHeight + topChatListHeight
+    func moveDownList() {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.topChatListViewContraint?.constant = strongSelf.topChatListHeight
+            strongSelf.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    func moveLeftChatList(){
+        leftChatListViewContraint?.constant = 0
         view.layoutIfNeeded()
     }
 
     func ignoreUser(id: Int){
+        guard let talkList = talkList else { return }
         ignoreLists.append(id)
         tableView.reloadData()
     }

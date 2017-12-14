@@ -57,7 +57,7 @@ class GroupChatListCell: UITableViewCell, Shakable {
         self.contentView.addSubview(talkLabelGroup)
 
         self.contentView.addSubview(profileImageView)
-        self.contentView.clipsToBounds = true
+        self.clipsToBounds = true
         addSwipeDelegate()
 
         profileNameLabel.numberOfLines = 0

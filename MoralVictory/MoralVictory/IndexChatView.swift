@@ -30,7 +30,7 @@ extension Shakable where Self: UIView {
 class IndexChatCell: UITableViewCell {
     lazy var talkLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14.5)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.numberOfLines = 0
         return label
     }()
@@ -55,21 +55,20 @@ class IndexChatCell: UITableViewCell {
     func setupView() {
         talkBackView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         talkBackView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        talkBackView.autoPinEdge(toSuperviewEdge: .top, withInset: 5)
-        talkBackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 5)
+        talkBackView.autoPinEdge(toSuperviewEdge: .top, withInset:3)
+        talkBackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 7)
         talkBackView.layer.shadowColor = UIColor.black.cgColor
         talkBackView.layer.shadowRadius = 1
         talkBackView.layer.shadowOpacity = 0.5
         talkBackView.layer.shadowOffset = CGSize(width: 2, height: 2)
 
-//        talkBackView.layer.masksToBounds = true
         talkBackView.layer.backgroundColor = UIColor.white.cgColor
         talkBackView.layer.cornerRadius = 5
 
         talkLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         talkLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        talkLabel.autoPinEdge(toSuperviewEdge: .top)
-        talkLabel.autoPinEdge(toSuperviewEdge: .bottom)
+        talkLabel.autoPinEdge(toSuperviewEdge: .top, withInset:3)
+        talkLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset:3)
 
         backgroundColor = .clear
     }
@@ -81,6 +80,8 @@ class IndexChatView: UIView {
 
     var closeFunction: (() -> Void)?
     var moveToIndex: ((Int) -> Void)?
+
+    let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
 
     lazy var innerPanel: UIView = {
         return UIView(frame: .zero)
@@ -139,6 +140,8 @@ class IndexChatView: UIView {
 
     let bgColor = UIColor(red: 0.37, green: 0.47, blue: 0.67, alpha: 1.0)
 
+    var bottomTableViewConstraints: NSLayoutConstraint?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -149,15 +152,21 @@ class IndexChatView: UIView {
     }
 
     func setupView() {
-        backgroundColor = bgColor
+        backgroundColor = .clear
         addSubview(innerPanel)
-        innerPanel.addSubview(tableView)
         addSubview(topPanel)
+        innerPanel.addSubview(tableView)
         topPanel.addSubview(closeButton)
         topPanel.addSubview(profileImageView)
         topPanel.addSubview(nickLabel)
 
-        innerPanel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+//        bottomTableViewConstraints = innerPanel.autoPinEdge(.bottom, to: .bottom, of: topPanel, withOffset: 0)
+//        innerPanel.autoPinEdge(.bottom, to: .bottom, of: topPanel, withOffset: 290)
+        innerPanel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
+        innerPanel.autoPinEdge(toSuperviewEdge: .left, withInset: 0)
+        innerPanel.autoPinEdge(toSuperviewEdge: .right, withInset: 0)
+        innerPanel.autoSetDimension(.height, toSize: topChatListHeight - 48)
+
         topPanel.autoPinEdge(toSuperviewEdge: .top)
         topPanel.autoPinEdge(toSuperviewEdge: .left)
         topPanel.autoPinEdge(toSuperviewEdge: .right)
@@ -188,12 +197,14 @@ class IndexChatView: UIView {
         tableView.dataSource = self
         tableView.separatorStyle = .none
 
-        layer.borderWidth = 0.5
-        layer.borderColor = UIColor.black.cgColor
+        innerPanel.layer.backgroundColor = bgColor.cgColor
+        innerPanel.backgroundColor = bgColor
+        innerPanel.layer.borderWidth = 0.5
+        innerPanel.layer.borderColor = UIColor.black.cgColor
 
     }
 
-    func scrollToMessage(){
+    func scrollToMessage() {
         guard let chatList = indexChatList else {
             return
         }
