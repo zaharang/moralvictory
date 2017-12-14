@@ -13,6 +13,10 @@ let receivedTimeFont = UIFont.systemFont(ofSize: 10)
 let readFont = UIFont.systemFont(ofSize: 10)
 let talkLabelFont = UIFont.systemFont(ofSize: 14)
 
+let imageViewSize = CGFloat(40)
+let secretProfileImageViewSize = CGFloat(40)
+let gapWithEdge = CGFloat(50)
+
 class GroupChatListCell: UITableViewCell, Shakable {
     var delegate: SwipeDelegate?
 
@@ -39,8 +43,9 @@ class GroupChatListCell: UITableViewCell, Shakable {
     var receivedTimeLabel = UILabel()
     var readLabel = UILabel()
     
+    var secretUserProfileImageView = UIImageView()
+    
     let baloonImgInsets : UIEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
-    var isSecretTalk: Bool = false
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -54,11 +59,12 @@ class GroupChatListCell: UITableViewCell, Shakable {
         talkLabelGroup.addSubview(talkLabelBaloonGroup)
         talkLabelGroup.addSubview(receivedTimeLabel)
         talkLabelGroup.addSubview(readLabel)
+        talkLabelGroup.addSubview(secretUserProfileImageView)
 
         self.contentView.addSubview(talkLabelGroup)
 
         self.contentView.addSubview(profileImageView)
-        self.contentView.clipsToBounds = true
+        self.clipsToBounds = true
         addSwipeDelegate()
 
         profileNameLabel.numberOfLines = 0
@@ -75,6 +81,10 @@ class GroupChatListCell: UITableViewCell, Shakable {
         
         receivedTimeLabel.numberOfLines = 1
         receivedTimeLabel.font = receivedTimeFont
+        
+        secretUserProfileImageView.alpha = 0.5
+        
+        backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
     }
     
     func setupLayoutConstraint(withTalkItem talkItem: Talk) {

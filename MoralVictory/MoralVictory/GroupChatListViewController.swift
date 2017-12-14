@@ -11,7 +11,6 @@ import PureLayout
 
 let topBarHeight = CGFloat(87)
 let bottomBarHeight = CGFloat(50)
-let imageViewSize = CGFloat(40)
 
 enum SwipeDirection: Int{
     case left = 0
@@ -27,6 +26,7 @@ class GroupChatListViewController: UIViewController {
     let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
 
     var talkList: [Talk]?
+    var ignoreTalkList: [Talk] = []
 
     var ignoreLists: [Int] = []
     
@@ -40,6 +40,17 @@ class GroupChatListViewController: UIViewController {
     }()
 
     var topChatListViewContraint: NSLayoutConstraint?
+    var leftChatListViewContraint: NSLayoutConstraint?
+
+    var topProfileConstraint: NSLayoutConstraint?
+    var leftProfileConstraint: NSLayoutConstraint?
+
+    lazy var profileAnimationView: UIImageView = {
+        let imageView = UIImageView()
+//        imageView.alpha = 0
+        imageView.image = Talk.images[0]
+        return imageView
+    }()
 
     lazy var chatListView: IndexChatView = {
         return IndexChatView(frame: .zero)
@@ -67,16 +78,23 @@ class GroupChatListViewController: UIViewController {
 
         fetchData()
 
+        view.addSubview(profileAnimationView)
+
+        profileAnimationView.autoSetDimensions(to: CGSize(width: imageViewSize, height: imageViewSize))
+        leftProfileConstraint = profileAnimationView.autoPinEdge(toSuperviewEdge: .left, withInset: 5)
+        topProfileConstraint = profileAnimationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
+
         self.view.addSubview(chatListView)
 
-        chatListView.autoPinEdge(.bottom, to: .top, of: tableView)
-        chatListView.autoPinEdge(toSuperviewEdge: .left)
-        chatListView.autoPinEdge(toSuperviewEdge: .right)
-        chatListView.autoSetDimension(.height, toSize: topChatListHeight)
+        chatListView.autoPinEdge(.bottom, to: .top, of: tableView, withOffset: 48)
+        leftChatListViewContraint = chatListView.autoPinEdge(toSuperviewEdge: .left, withInset: UIScreen.main.bounds.width)
+        chatListView.autoSetDimension(.width, toSize: UIScreen.main.bounds.width)
+        chatListView.autoPinEdge(toSuperviewEdge: .top, withInset: topBarHeight)
         chatListView.closeFunction = closeTopView
         chatListView.moveToIndex = moveToIndex
 
         bottomBarView = UIView(frame: .zero)
+
         self.view.addSubview(bottomBarView)
         bottomBarView.autoPinEdge(.left, to: .left, of: view)
         bottomBarView.autoPinEdge(.right, to: .right, of: view)
@@ -100,7 +118,46 @@ class GroupChatListViewController: UIViewController {
         topBarView = UIImageView(image: UIImage(named: "navi_bar"))
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         self.view.addSubview(topBarView)
+
+
     }
+
+    func sendPush() {
+
+        let parameters = ["to": "R990c1b1631bfe225de6524092cbabaaf",
+                                       "messages" :["type":"text","text":"Zaharang Great!!"]] as? [String:AnyObject]
+
+        let url = URL(string: "https://api.line.me/v2/bot/message/push")!
+        var request = URLRequest(url: url)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer {PexDk0ydhrSYAx/iI310o38PxThlsb7sJSj3Q5zD1+88l4ZEF5OuYwzhjanR9RObsRXE37P5g9js9rjo0/mb7RHmGgus4DnTQBTe89a9/Y5nn/17Y8rejd6VmUqVFxuCJhenP8REC0eUD+HBbtEdbAdB04t89/1O/w1cDnyilFU=}", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "POST"
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+                print (request.httpBody)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(error)")
+                return
+            }
+
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
+            }
+
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(responseString)")
+        }
+        task.resume()
+    }
+
 
     func fetchData() {
         talkList = TalkDataHelper.shared.getTalkList()
@@ -109,11 +166,14 @@ class GroupChatListViewController: UIViewController {
     }
 
     func closeTopView() {
-        UIView.animate(withDuration: 0.2) { [weak self] in
+        UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.topChatListViewContraint?.constant = topBarHeight
             strongSelf.view.layoutIfNeeded()
-        }
+        }, completion: { [weak self] _ in
+            self?.leftChatListViewContraint?.constant = UIScreen.main.bounds.width
+            self?.view.layoutIfNeeded()
+        })
     }
 
     func moveToIndex(index: Int) {
@@ -131,9 +191,11 @@ class GroupChatListViewController: UIViewController {
         }
     }
 
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+
     
     private func scrollToBottom() {
         let indexPath = IndexPath(row: (talkList?.count ?? 0) - 1 , section: 0)
@@ -188,19 +250,60 @@ class GroupChatListViewController: UIViewController {
 
         return nil
     }
+
+    func startSlideAnimation(index: Int){
+        if let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? GroupChatListCell {
+            let offsetY = cell.frame.origin.y + cell.profileImageView.frame.origin.y - tableView.contentOffset.y + topBarHeight
+
+            topProfileConstraint?.constant = offsetY
+            leftProfileConstraint?.constant = 10
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
+                    self?.leftProfileConstraint?.constant = UIScreen.main.bounds.width
+                    self?.view.layoutIfNeeded()
+                    }, completion: {[weak self] _ in
+                        self?.throwInAnimation()
+                })
+            })
+
+        }
+    }
 }
 
 extension GroupChatListViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: textField.text ?? "", receivedTime: Date())
+        
+        guard let text = textField.text else { return false }
+        
+        // secret
+        var isSecret: Bool
+        let sendText: String
+        if text.contains("#") {
+            isSecret = true
+            sendText = text.components(separatedBy: " ")[1]
+            
+            // user data, but not use. in this case use static tester info
+            // text.components(separatedBy: " ")[0]
+        }
+        else {
+            isSecret = false
+            sendText = text
+        }
+        
+        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
 
         talkList?.append(newMessage)
         tableView.reloadData()
         scrollToBottom()
         
         textField.text = ""
-        
+
+
+        sendPush()
+
         return true
+
     }
 }
 
@@ -241,27 +344,29 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         
         let cell: GroupChatListCell
         if talkItem.userId == 0 {
-            cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-            //            cell.isSecretTalk = true
+            print("talkItem.isSecret: \(talkItem.isSecret)")
+            if talkItem.isSecret {
+                cell = GroupChatListCellMeSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
         } else {
-            cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-            //            cell.isSecretTalk = false
+            if talkItem.isSecret {
+                cell = GroupChatListCellOtherSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
         }
         
         cell.setupLayoutConstraint(withTalkItem: talkItem)
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
+        cell.secretUserProfileImageView.image = #imageLiteral(resourceName: "profile8")
         cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
-        if cell.isSecretTalk == true {
-            cell.talkLabel.textColor = UIColor.blue
-        } else {
-            cell.talkLabel.textColor = UIColor.black
-        }
-        cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
         return cell
@@ -315,17 +420,34 @@ extension GroupChatListViewController: SwipeDelegate {
         chatListView.nick = talkItem.userName
         chatListView.profileImage = Talk.images[talkItem.userId]
         chatListView.indexChatList = talkList?.filter { $0.userId == talkItem.userId }
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.moveDownChatList()
+
+        profileAnimationView.image = Talk.images[talkItem.userId]
+        startSlideAnimation(index: index)
+    }
+
+    func throwInAnimation(){
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+            self?.moveLeftChatList()
+        }) { [weak self] _ in
+           self?.moveDownList()
         }
     }
 
-    func moveDownChatList(){
-        topChatListViewContraint?.constant = topBarHeight + topChatListHeight
+    func moveDownList() {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.topChatListViewContraint?.constant = strongSelf.topChatListHeight
+            strongSelf.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    func moveLeftChatList(){
+        leftChatListViewContraint?.constant = 0
         view.layoutIfNeeded()
     }
 
     func ignoreUser(id: Int){
+        guard let talkList = talkList else { return }
         ignoreLists.append(id)
         tableView.reloadData()
     }

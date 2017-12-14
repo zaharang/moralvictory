@@ -45,7 +45,7 @@ class GroupChatListCellOther: GroupChatListCell {
         receivedTimeLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
         
         receivedTimeLabel.layoutIfNeeded()
-        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - imageViewSize - 10 - 50, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
+        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - imageViewSize - 10 - gapWithEdge, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
         
         // height 16.707... is one line
         if contentStringExpectRect.height < 17 {
