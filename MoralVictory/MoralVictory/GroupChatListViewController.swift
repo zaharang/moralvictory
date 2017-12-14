@@ -47,7 +47,6 @@ class GroupChatListViewController: UIViewController {
 
     lazy var profileAnimationView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.alpha = 0
         imageView.image = Talk.images[0]
         return imageView
     }()
@@ -447,8 +446,23 @@ extension GroupChatListViewController: SwipeDelegate {
     }
 
     func ignoreUser(id: Int){
-        guard let talkList = talkList else { return }
+        guard var talkLists = talkList else { return }
         ignoreLists.append(id)
+
+        var indexPaths: [IndexPath] = []
+        var ignoreList: [Talk] = [] // = talkList.filter{ $0.userId == id }
+        for i in (0..<talkLists.count).reversed() {
+            if talkLists[i].userId == id {
+                if let talk = talkList?.remove(at: i) {
+                    ignoreList.append(talk)
+                }
+                indexPaths.append(IndexPath(row: i, section: 0))
+            }
+        }
+
+        print(talkList?.count ?? 0)
+//        tableView.deleteRows(at: indexPaths, with: .left)
         tableView.reloadData()
+        scrollToBottom()
     }
 }
