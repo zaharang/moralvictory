@@ -18,6 +18,8 @@
 		20C9C1B71FE14E0D00440D30 /* TalkDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B61FE14E0D00440D30 /* TalkDataHelper.swift */; };
 		20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1B91FE14E2300440D30 /* Talk.swift */; };
 		20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */; };
+		670C2F051FE241F700FDE29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 670C2F041FE241F600FDE29E /* GoogleService-Info.plist */; };
+		670C2F071FE2436200FDE29E /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 670C2F061FE2436100FDE29E /* Messages.framework */; };
 		CE4836B41FE21698002A1F68 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */; };
 		CE4836B61FE21713002A1F68 /* GroupChatListCellMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */; };
 		CE4836B81FE21730002A1F68 /* GroupChatListCellOther.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */; };
@@ -39,6 +41,9 @@
 		20C9C1B91FE14E2300440D30 /* Talk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Talk.swift; sourceTree = "<group>"; };
 		20C9C1BB1FE150DE00440D30 /* TalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkViewController.swift; sourceTree = "<group>"; };
 		4113409C412577EE175EF869 /* Pods-MoralVictory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoralVictory.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoralVictory/Pods-MoralVictory.debug.xcconfig"; sourceTree = "<group>"; };
+		670C2F031FE2419900FDE29E /* MoralVictory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoralVictory.entitlements; sourceTree = "<group>"; };
+		670C2F041FE241F600FDE29E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		670C2F061FE2436100FDE29E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
 		CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellMe.swift; sourceTree = "<group>"; };
 		CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellOther.swift; sourceTree = "<group>"; };
@@ -49,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				670C2F071FE2436200FDE29E /* Messages.framework in Frameworks */,
 				20022DD731D38A83107BA15C /* Pods_MoralVictory.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +92,8 @@
 		1E9BA2401FE144F80031D5BB /* MoralVictory */ = {
 			isa = PBXGroup;
 			children = (
+				670C2F041FE241F600FDE29E /* GoogleService-Info.plist */,
+				670C2F031FE2419900FDE29E /* MoralVictory.entitlements */,
 				20C9C1B81FE14E1700440D30 /* Model */,
 				20C9C1B51FE14DE300440D30 /* DataHelper */,
 				20C9C1B41FE14DDF00440D30 /* ViewController */,
@@ -131,6 +139,7 @@
 		D7E3230D15EE70BCFFC6341A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				670C2F061FE2436100FDE29E /* Messages.framework */,
 				07E489923390AAD0FE6A7793 /* Pods_MoralVictory.framework */,
 			);
 			name = Frameworks;
@@ -172,6 +181,11 @@
 					1E9BA23D1FE144F80031D5BB = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -199,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E9BA24C1FE144F80031D5BB /* LaunchScreen.storyboard in Resources */,
+				670C2F051FE241F700FDE29E /* GoogleService-Info.plist in Resources */,
 				1E9BA2491FE144F80031D5BB /* Assets.xcassets in Resources */,
 				1E9BA2471FE144F80031D5BB /* Main.storyboard in Resources */,
 			);
@@ -230,22 +245,28 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MoralVictory/Pods-MoralVictory-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -424,12 +445,13 @@
 			baseConfigurationReference = 4113409C412577EE175EF869 /* Pods-MoralVictory.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MoralVictory/MoralVictory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U6SU6MWHKJ;
 				INFOPLIST_FILE = MoralVictory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zaharang.ZaPushTest2017;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -441,12 +463,13 @@
 			baseConfigurationReference = 0EC74668F04705EC78834892 /* Pods-MoralVictory.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MoralVictory/MoralVictory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U6SU6MWHKJ;
 				INFOPLIST_FILE = MoralVictory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nemustech.MoralVictory12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zaharang.ZaPushTest2017;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

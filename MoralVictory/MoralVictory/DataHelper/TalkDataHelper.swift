@@ -26,7 +26,7 @@ class TalkDataHelper {
         for i in 0..<COUNT_DUMP {
             let randIdx = Int(arc4random_uniform(UInt32(dumpUsers.count)))
             let contentLength = Int(arc4random_uniform(85)) + 7
-            talkList.append(Talk(messageId: i, userId: dumpUsers[randIdx].0, userName: dumpUsers[randIdx].1, content: randomString(length: contentLength)))
+            talkList.append(Talk(messageId: i, userId: dumpUsers[randIdx].0, userName: dumpUsers[randIdx].1, content: randomString(length: contentLength), receivedTime: Date()))
         }
 
         return talkList

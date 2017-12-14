@@ -161,6 +161,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.setupLayoutConstraint(withTalkItem: talkItem)
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
+        cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
         if cell.isSecretTalk == true {
