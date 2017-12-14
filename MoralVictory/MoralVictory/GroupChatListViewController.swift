@@ -107,6 +107,7 @@ class GroupChatListViewController: UIViewController {
     func fetchData() {
         talkList = TalkDataHelper.shared.getTalkList()
         tableView.reloadData()
+        scrollToBottom()
     }
 
     func closeTopView() {
@@ -135,15 +136,20 @@ class GroupChatListViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    private func scrollToBottom() {
+        let indexPath = IndexPath(row: (talkList?.count ?? 0) - 1 , section: 0)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+    }
 }
 
 extension GroupChatListViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: textField.text ?? "", receivedTime: Date())
 
         talkList?.append(newMessage)
         tableView.reloadData()
+        scrollToBottom()
         
         textField.text = ""
         
