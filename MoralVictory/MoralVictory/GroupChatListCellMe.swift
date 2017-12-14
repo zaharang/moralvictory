@@ -38,12 +38,12 @@ class GroupChatListCellMe: GroupChatListCell {
         readLabel.autoPinEdge(.bottom, to: .top, of: receivedTimeLabel)
         
         receivedTimeLabel.layoutIfNeeded()
-        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - receivedTimeLabel.frame.width - 50, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
+        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - receivedTimeLabel.frame.width - gapWithEdge, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
         // height 16.707... is one line
         if contentStringExpectRect.height < 17 {
         }
         else {
-            receivedTimeLabel.autoPinEdge(.left, to: .left, of: talkLabelGroup, withOffset: 50)
+            receivedTimeLabel.autoPinEdge(.left, to: .left, of: talkLabelGroup, withOffset: gapWithEdge)
         }
         
         talkLabel.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup, withOffset: 15)

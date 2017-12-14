@@ -11,7 +11,6 @@ import PureLayout
 
 let topBarHeight = CGFloat(87)
 let bottomBarHeight = CGFloat(50)
-let imageViewSize = CGFloat(40)
 
 enum SwipeDirection: Int{
     case left = 0
@@ -316,6 +315,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.setupLayoutConstraint(withTalkItem: talkItem)
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
+        cell.secretUserProfileImageView.image = #imageLiteral(resourceName: "profile8")
         cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
