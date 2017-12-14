@@ -107,6 +107,10 @@ class GroupChatListViewController: UIViewController {
             cell.shake()
         }
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }
 
 extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSource {
