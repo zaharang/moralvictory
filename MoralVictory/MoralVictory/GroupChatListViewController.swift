@@ -122,7 +122,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return talkList?.count ?? 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: GroupChatListCell
 
@@ -161,10 +161,8 @@ extension GroupChatListViewController: SwipeDelegate {
 
         switch direction {
         case .left:
-            print("do Ignore")
             showIgnoreSheet(index: tableView.indexPath(for: cell)?.row ?? 0)
         default:
-            print("make indexList")
             showIndexView(index: tableView.indexPath(for: cell)?.row ?? 0)
         }
     }
@@ -177,21 +175,17 @@ extension GroupChatListViewController: SwipeDelegate {
 
         let lv1Button = UIAlertAction(title: "5 Minutes", style: .default, handler: {[weak self] (action) -> Void in
             self?.ignoreUser(id: talkItem.userId)
-            print("Ok button tapped")
         })
 
         let lv2Button = UIAlertAction(title: "1 Hour", style: .default, handler: {[weak self] (action) -> Void in
             self?.ignoreUser(id: talkItem.userId)
-            print("Ok button tapped")
         })
 
         let foreverButton = UIAlertAction(title: "Forever", style: .destructive, handler: {[weak self] (action) -> Void in
             self?.ignoreUser(id: talkItem.userId)
-            print("Delete button tapped")
         })
 
         let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
-            print("Cancel ")
         })
 
 
@@ -205,6 +199,7 @@ extension GroupChatListViewController: SwipeDelegate {
 
     func showIndexView(index: Int){
         guard let talkItem = talkList?[index] else { return }
+        chatListView.messageId = talkItem.messageId
         chatListView.nick = talkItem.userName
         chatListView.profileImage = Talk.images[talkItem.userId]
         chatListView.indexChatList = talkList?.filter { $0.userId == talkItem.userId }
