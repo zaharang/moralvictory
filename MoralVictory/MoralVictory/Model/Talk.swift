@@ -18,13 +18,15 @@ struct Talk {
     let userName: String
     let content: String
     let receivedTime: Date
+    let isSecret: Bool
 
-    init(messageId:Int, userId: Int, userName: String, content: String, receivedTime: Date) {
+    init(messageId:Int, userId: Int, userName: String, content: String, receivedTime: Date, isSecret: Bool = false) {
         self.messageId = messageId
         self.userId = userId
         self.userName = userName
         self.content = content
         self.receivedTime = receivedTime
+        self.isSecret = isSecret
     }
     
     func getReceivedTimeString() -> String {

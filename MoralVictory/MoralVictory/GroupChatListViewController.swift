@@ -22,8 +22,6 @@ protocol SwipeDelegate {
     func swipe(cell: UITableViewCell, direction: SwipeDirection)
 }
 
-let meUser = (0, "testMe")
-
 class GroupChatListViewController: UIViewController {
 
     let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
@@ -144,6 +142,7 @@ class GroupChatListViewController: UIViewController {
     func fetchData() {
         talkList = TalkDataHelper.shared.getTalkList()
         tableView.reloadData()
+        scrollToBottom()
     }
 
     func closeTopView() {
@@ -172,15 +171,38 @@ class GroupChatListViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    private func scrollToBottom() {
+        let indexPath = IndexPath(row: (talkList?.count ?? 0) - 1 , section: 0)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+    }
 }
 
 extension GroupChatListViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: textField.text ?? "", receivedTime: Date())
+        guard let text = textField.text else { return false }
+        
+        // secret
+        var isSecret: Bool
+        let sendText: String
+        if text.contains("#") {
+            isSecret = true
+            sendText = text.components(separatedBy: " ")[1]
+            
+            // user data, but not use. in this case use static tester info
+            // text.components(separatedBy: " ")[0]
+        }
+        else {
+            isSecret = false
+            sendText = text
+        }
+        
+        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
 
         talkList?.append(newMessage)
         tableView.reloadData()
+        scrollToBottom()
         
         textField.text = ""
 
@@ -210,8 +232,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: GroupChatListCell
-
+    
         /////////////////////////////////////////////////////////////////
         // for debugging
 //        let randomNo: UInt32 = arc4random_uniform(2);
@@ -222,18 +243,27 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 //        }
         /////////////////////////////////////////////////////////////////
 
-        if isBaloonMe == true {
-            cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-//            cell.isSecretTalk = true
-        } else {
-            cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-//            cell.isSecretTalk = false
-        }
 
         guard let talkItem = talkList?[indexPath.row] else {
-            return cell
+            return UITableViewCell()
+        }
+        
+        let cell: GroupChatListCell
+        if talkItem.userId == 0 {
+            print("talkItem.isSecret: \(talkItem.isSecret)")
+            if talkItem.isSecret {
+                cell = GroupChatListCellMeSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+        } else {
+            if talkItem.isSecret {
+                cell = GroupChatListCellOtherSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
         }
         
         cell.setupLayoutConstraint(withTalkItem: talkItem)
@@ -242,12 +272,6 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
-        if cell.isSecretTalk == true {
-            cell.talkLabel.textColor = UIColor.blue
-        } else {
-            cell.talkLabel.textColor = UIColor.black
-        }
-        cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
         return cell
