@@ -253,8 +253,19 @@ class GroupChatListViewController: UIViewController {
                         let idNum: Int = Int(splitStrArray[0])!
                         let msgString = String(splitStrArray[1])
                         if let userName = findUserName(userId: idNum) {
+                            let isSecret: Bool
+                            var contentStr: String
+                            if msgString.contains("#") {
+                                contentStr = msgString.components(separatedBy: " ")[1]
+                                isSecret = true
+                            }
+                            else {
+                                contentStr = msgString
+                                isSecret = false
+                            }
+                            
                             let newMessage = Talk(messageId: 300, userId: idNum, userName: userName,
-                                                  content: msgString, receivedTime: Date())
+                                                  content: contentStr, receivedTime: Date(), isSecret: isSecret)
 
                             talkList?.append(newMessage)
                             tableView.reloadData()
