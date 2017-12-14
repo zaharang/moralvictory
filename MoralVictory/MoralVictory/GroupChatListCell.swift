@@ -35,6 +35,7 @@ class GroupChatListCell: UITableViewCell, Shakable {
     }()
     var profileImageView = UIImageView()
     let baloonImgInsets : UIEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
+    var isSecretTalk: Bool = false
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

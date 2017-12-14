@@ -146,8 +146,12 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 
         if isBaloonMe == true {
             cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
+            // debugging
+//            cell.isSecretTalk = true
         } else {
             cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
+            // debugging
+//            cell.isSecretTalk = false
         }
 
         guard let talkItem = talkList?[indexPath.row] else {
@@ -159,6 +163,11 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
+        if cell.isSecretTalk == true {
+            cell.talkLabel.textColor = UIColor.blue
+        } else {
+            cell.talkLabel.textColor = UIColor.black
+        }
         cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
