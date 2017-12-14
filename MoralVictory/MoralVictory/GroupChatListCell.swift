@@ -40,7 +40,6 @@ class GroupChatListCell: UITableViewCell, Shakable {
     var readLabel = UILabel()
     
     let baloonImgInsets : UIEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
-    var isSecretTalk: Bool = false
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -75,6 +74,8 @@ class GroupChatListCell: UITableViewCell, Shakable {
         
         receivedTimeLabel.numberOfLines = 1
         receivedTimeLabel.font = receivedTimeFont
+        
+        backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
     }
     
     func setupLayoutConstraint(withTalkItem talkItem: Talk) {

@@ -9,6 +9,7 @@
 import Foundation
 
 let meUser = (0, "testMe")
+let secretTestUser = (1, "박현민")
 
 class TalkDataHelper {
 
@@ -20,7 +21,7 @@ class TalkDataHelper {
 
     }
 
-    let dumpUsers: [(Int, String)] = [meUser, (1, "ShrimpChips"), (2, "French Pie"), (3, "ConnectOne"), (4,"Beer"), (5, "Soju"), (6, "PaperCup")]
+    let dumpUsers: [(Int, String)] = [meUser, secretTestUser, (2, "French Pie"), (3, "ConnectOne"), (4,"Beer"), (5, "Soju"), (6, "PaperCup")]
 
     func makeDumpList() -> [Talk] {
         var talkList: [Talk] = []

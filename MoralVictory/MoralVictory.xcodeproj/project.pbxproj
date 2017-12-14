@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E559D041FE259C0009E6215 /* GroupChatListCellMeSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E559D031FE259C0009E6215 /* GroupChatListCellMeSecret.swift */; };
+		1E559D061FE259CF009E6215 /* GroupChatListCellOtherSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E559D051FE259CF009E6215 /* GroupChatListCellOtherSecret.swift */; };
 		1E9BA2421FE144F80031D5BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9BA2411FE144F80031D5BB /* AppDelegate.swift */; };
 		1E9BA2441FE144F80031D5BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9BA2431FE144F80031D5BB /* ViewController.swift */; };
 		1E9BA2471FE144F80031D5BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E9BA2451FE144F80031D5BB /* Main.storyboard */; };
@@ -28,6 +30,8 @@
 /* Begin PBXFileReference section */
 		07E489923390AAD0FE6A7793 /* Pods_MoralVictory.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoralVictory.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC74668F04705EC78834892 /* Pods-MoralVictory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoralVictory.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoralVictory/Pods-MoralVictory.release.xcconfig"; sourceTree = "<group>"; };
+		1E559D031FE259C0009E6215 /* GroupChatListCellMeSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellMeSecret.swift; sourceTree = "<group>"; };
+		1E559D051FE259CF009E6215 /* GroupChatListCellOtherSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCellOtherSecret.swift; sourceTree = "<group>"; };
 		1E9BA23E1FE144F80031D5BB /* MoralVictory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoralVictory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9BA2411FE144F80031D5BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E9BA2431FE144F80031D5BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,7 +110,9 @@
 				1E9BA2531FE14C0C0031D5BB /* GroupChatListViewController.swift */,
 				CE4836B31FE21698002A1F68 /* GroupChatListCell.swift */,
 				CE4836B51FE21713002A1F68 /* GroupChatListCellMe.swift */,
+				1E559D031FE259C0009E6215 /* GroupChatListCellMeSecret.swift */,
 				CE4836B71FE21730002A1F68 /* GroupChatListCellOther.swift */,
+				1E559D051FE259CF009E6215 /* GroupChatListCellOtherSecret.swift */,
 				20C7FE5C1FE15F6C008A6A2A /* IndexChatView.swift */,
 			);
 			path = MoralVictory;
@@ -306,10 +312,12 @@
 				20C9C1BA1FE14E2300440D30 /* Talk.swift in Sources */,
 				CE4836B41FE21698002A1F68 /* GroupChatListCell.swift in Sources */,
 				1E9BA2441FE144F80031D5BB /* ViewController.swift in Sources */,
+				1E559D061FE259CF009E6215 /* GroupChatListCellOtherSecret.swift in Sources */,
 				CE4836B61FE21713002A1F68 /* GroupChatListCellMe.swift in Sources */,
 				1E9BA2421FE144F80031D5BB /* AppDelegate.swift in Sources */,
 				20C7FE5D1FE15F6C008A6A2A /* IndexChatView.swift in Sources */,
 				20C9C1BC1FE150DE00440D30 /* TalkViewController.swift in Sources */,
+				1E559D041FE259C0009E6215 /* GroupChatListCellMeSecret.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

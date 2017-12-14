@@ -143,7 +143,25 @@ class GroupChatListViewController: UIViewController {
 
 extension GroupChatListViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: textField.text ?? "", receivedTime: Date())
+        
+        guard let text = textField.text else { return false }
+        
+        // secret
+        var isSecret: Bool
+        let sendText: String
+        if text.contains("#") {
+            isSecret = true
+            sendText = text.components(separatedBy: " ")[1]
+            
+            // user data, but not use. in this case use static tester info
+            // text.components(separatedBy: " ")[0]
+        }
+        else {
+            isSecret = false
+            sendText = text
+        }
+        
+        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
 
         talkList?.append(newMessage)
         tableView.reloadData()
@@ -192,13 +210,20 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         
         let cell: GroupChatListCell
         if talkItem.userId == 0 {
-            cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-            //            cell.isSecretTalk = true
+            print("talkItem.isSecret: \(talkItem.isSecret)")
+            if talkItem.isSecret {
+                cell = GroupChatListCellMeSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
         } else {
-            cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
-            // debugging
-            //            cell.isSecretTalk = false
+            if talkItem.isSecret {
+                cell = GroupChatListCellOtherSecret(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
+            else {
+                cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
+            }
         }
         
         cell.setupLayoutConstraint(withTalkItem: talkItem)
@@ -207,12 +232,6 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
-        if cell.isSecretTalk == true {
-            cell.talkLabel.textColor = UIColor.blue
-        } else {
-            cell.talkLabel.textColor = UIColor.black
-        }
-        cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
         return cell
