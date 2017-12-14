@@ -15,7 +15,7 @@ class TalkDataHelper {
 
     static let shared: TalkDataHelper = TalkDataHelper()
 
-    private let COUNT_DUMP = 200
+    private let COUNT_DUMP = 100
 
     private init() {
 

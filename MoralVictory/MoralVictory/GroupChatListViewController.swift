@@ -49,7 +49,6 @@ class GroupChatListViewController: UIViewController {
 
     lazy var profileAnimationView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.alpha = 0
         imageView.image = Talk.images[0]
         return imageView
     }()
@@ -148,10 +147,11 @@ class GroupChatListViewController: UIViewController {
         topBarView.addSubview(participantLabel)
     }
 
-    func sendPush() {
+    func sendPush(text: String) {
 
-        let parameters = ["to": "R990c1b1631bfe225de6524092cbabaaf",
-                                       "messages" :["type":"text","text":"Zaharang Great!!"]] as? [String:AnyObject]
+        let parameters:[String: Any] = ["to": "R990c1b1631bfe225de6524092cbabaaf",
+                                       "messages" : [["type":"text",
+                                                     "text":text]]]
 
         let url = URL(string: "https://api.line.me/v2/bot/message/push")!
         var request = URLRequest(url: url)
@@ -160,26 +160,26 @@ class GroupChatListViewController: UIViewController {
         request.httpMethod = "POST"
 
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
-                print (request.httpBody)
+            let jsonObject = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            request.httpBody = jsonObject
         } catch let error {
             print(error.localizedDescription)
         }
 
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
-                return
-            }
-
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
-            }
-
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
+//            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+//                print("error=\(error)")
+//                return
+//            }
+//
+//            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+//                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+//                print("response = \(response)")
+//            }
+//
+//            let responseString = String(data: data, encoding: .utf8)
+//            print("responseString = \(responseString)")
         }
         task.resume()
     }
@@ -317,6 +317,8 @@ extension GroupChatListViewController: UITextFieldDelegate {
             sendText = text
         }
         
+        
+        sendPush(text: sendText)
         let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
 
         talkList?.append(newMessage)
@@ -324,10 +326,7 @@ extension GroupChatListViewController: UITextFieldDelegate {
         scrollToBottom()
         
         textField.text = ""
-
-
-        sendPush()
-
+        
         return true
 
     }
@@ -473,8 +472,23 @@ extension GroupChatListViewController: SwipeDelegate {
     }
 
     func ignoreUser(id: Int){
-        guard let talkList = talkList else { return }
+        guard var talkLists = talkList else { return }
         ignoreLists.append(id)
+
+        var indexPaths: [IndexPath] = []
+        var ignoreList: [Talk] = [] // = talkList.filter{ $0.userId == id }
+        for i in (0..<talkLists.count).reversed() {
+            if talkLists[i].userId == id {
+                if let talk = talkList?.remove(at: i) {
+                    ignoreList.append(talk)
+                }
+                indexPaths.append(IndexPath(row: i, section: 0))
+            }
+        }
+
+        print(talkList?.count ?? 0)
+//        tableView.deleteRows(at: indexPaths, with: .left)
         tableView.reloadData()
+        scrollToBottom()
     }
 }
