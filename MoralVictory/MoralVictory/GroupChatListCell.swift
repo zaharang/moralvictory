@@ -12,6 +12,7 @@ class GroupChatListCell: UITableViewCell, Shakable {
     var delegate: SwipeDelegate?
 
     var talkLabelGroup = UIView()
+    var talkLabelBaloonGroup = UIView()
     lazy var talkLabelImageView: UIImageView = {
         let imgView = UIImageView()
 
@@ -29,13 +30,14 @@ class GroupChatListCell: UITableViewCell, Shakable {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         //        self.contentView.addSubview(talkLabel)
+        talkLabelGroup.addSubview(profileNameLabel)
 
+        talkLabelBaloonGroup.addSubview(talkLabelImageView)
+        talkLabelBaloonGroup.addSubview(talkLabel)
+        talkLabelGroup.addSubview(talkLabelBaloonGroup)
 
-        talkLabelGroup.addSubview(talkLabelImageView)
-        talkLabelGroup.addSubview(talkLabel)
         self.contentView.addSubview(talkLabelGroup)
 
-        contentView.addSubview(profileNameLabel)
         self.contentView.addSubview(profileImageView)
         self.contentView.clipsToBounds = true
         addSwipeDelegate()
@@ -45,20 +47,6 @@ class GroupChatListCell: UITableViewCell, Shakable {
 
         talkLabel.numberOfLines = 0
         talkLabel.lineBreakMode = .byWordWrapping
-
-        profileImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 20)
-        profileImageView.autoSetDimension(.width, toSize: imageViewSize)
-        profileImageView.autoSetDimension(.height, toSize: imageViewSize)
-        profileImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
-
-        profileNameLabel.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 20)
-        profileNameLabel.autoPinEdge(.right, to: .right, of: contentView)
-        profileNameLabel.autoPinEdge(.top, to: .top, of: contentView)
-
-        talkLabel.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 20)
-        talkLabel.autoPinEdge(.right, to: .right, of: contentView)
-        talkLabel.autoPinEdge(.top, to: .bottom, of: profileNameLabel)
-        talkLabel.autoPinEdge(.bottom, to: .bottom, of: contentView)
     }
 
     required init?(coder aDecoder: NSCoder) {

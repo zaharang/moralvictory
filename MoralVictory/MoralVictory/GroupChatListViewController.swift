@@ -125,6 +125,17 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: GroupChatListCell
+
+        /////////////////////////////////////////////////////////////////
+        // for debugging
+//        let randomNo: UInt32 = arc4random_uniform(2);
+//        if randomNo == 1 {
+//            isBaloonMe = true
+//        } else {
+//            isBaloonMe = false
+//        }
+        /////////////////////////////////////////////////////////////////
+
         if isBaloonMe == true {
             cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
         } else {
