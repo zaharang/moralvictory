@@ -139,6 +139,55 @@ class GroupChatListViewController: UIViewController {
         let indexPath = IndexPath(row: (talkList?.count ?? 0) - 1 , section: 0)
         tableView.scrollToRow(at: indexPath, at: .top, animated: false)
     }
+
+    func addTalk(_ info: [AnyHashable : Any]) {
+        for (key, value) in info {
+            guard let keyString: String = key as? String else {
+                return
+            }
+
+            if keyString == "aps" {
+                guard let valDic = value as? [AnyHashable: Any] else {
+                    return
+                }
+
+                for (vKey, vValue) in valDic {
+                    guard let vKeyString = vKey as? String else {
+                        return
+                    }
+
+                    if vKeyString == "alert" {
+                        guard let vValueString = vValue as? String else {
+                            return
+                        }
+
+                        let splitStrArray = vValueString.split(separator: ":")
+                        let idNum: Int = Int(splitStrArray[0])!
+                        let msgString = String(splitStrArray[1])
+                        if let userName = findUserName(userId: idNum) {
+                            let newMessage = Talk(messageId: 300, userId: idNum, userName: userName,
+                                                  content: msgString, receivedTime: Date())
+
+                            talkList?.append(newMessage)
+                            tableView.reloadData()
+                            scrollToBottom()
+                        }
+                    }
+                }
+            }
+            print("\(key), \(value)")
+        }
+    }
+
+    func findUserName(userId: Int) -> String? {
+        for (key, value) in TalkDataHelper.shared.dumpUsers {
+            if key == userId {
+                return value
+            }
+        }
+
+        return nil
+    }
 }
 
 extension GroupChatListViewController: UITextFieldDelegate {

@@ -16,6 +16,7 @@ import IQKeyboardManager
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var groupChatListVC: GroupChatListViewController?
 
     let gcmMessageIDKey = "gcm.message_id"
 
@@ -26,7 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        window?.rootViewController = GroupChatListViewController()
+        groupChatListVC = GroupChatListViewController()
+        window?.rootViewController = groupChatListVC
         window?.makeKeyAndVisible()
 
         Messaging.messaging().delegate = self
@@ -151,6 +153,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
         // Print full message.
         print(userInfo)
+
+        groupChatListVC?.addTalk(userInfo)
 
         // Change this to your preferred presentation option
         completionHandler([])
