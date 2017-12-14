@@ -23,15 +23,13 @@ class GroupChatListCellOther: GroupChatListCell {
     
     override func setupLayoutConstraint(withTalkItem talkItem: Talk) {
         
-        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - imageViewSize - 10, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
-        
         profileImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 5)
         profileImageView.autoPinEdge(.top, to: .top, of: talkLabelGroup)
         profileImageView.autoSetDimension(.width, toSize: imageViewSize)
         profileImageView.autoSetDimension(.height, toSize: imageViewSize)
         
         talkLabelGroup.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 5)
-        talkLabelGroup.autoPinEdge(.right, to: .right, of: contentView)
+        talkLabelGroup.autoPinEdge(.right, to: .right, of: contentView, withOffset: -50)
         talkLabelGroup.autoPinEdge(.top, to: .top, of: contentView, withOffset: 10)
         talkLabelGroup.autoPinEdge(.bottom, to: .bottom, of: contentView, withOffset: -10)
         
@@ -45,6 +43,9 @@ class GroupChatListCellOther: GroupChatListCell {
         
         receivedTimeLabel.autoPinEdge(.left, to: .right, of: talkLabelBaloonGroup)
         receivedTimeLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
+        
+        receivedTimeLabel.layoutIfNeeded()
+        let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - imageViewSize - 10 - 50, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
         
         // height 16.707... is one line
         if contentStringExpectRect.height < 17 {
