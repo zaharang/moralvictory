@@ -14,9 +14,7 @@ class GroupChatListCellOther: GroupChatListCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         let img = UIImage(named: "baloon_left")
-        let imgInsets : UIEdgeInsets = UIEdgeInsetsMake(20, 30, 20, 30)
-
-        talkLabelImageView.image = img?.resizableImage(withCapInsets: imgInsets, resizingMode: .stretch)
+        talkLabelImageView.image = img?.resizableImage(withCapInsets: baloonImgInsets, resizingMode: .stretch)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -54,10 +52,10 @@ class GroupChatListCellOther: GroupChatListCell {
             talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
         }
         
-        talkLabel.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup, withOffset: 10)
-        talkLabel.autoPinEdge(.right, to: .right, of: talkLabelBaloonGroup, withOffset: -10)
-        talkLabel.autoPinEdge(.top, to: .top, of: talkLabelBaloonGroup, withOffset: 5)
-        talkLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelBaloonGroup, withOffset: -5)
+        talkLabel.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup, withOffset: 15)
+        talkLabel.autoPinEdge(.right, to: .right, of: talkLabelBaloonGroup, withOffset: -15)
+        talkLabel.autoPinEdge(.top, to: .top, of: talkLabelBaloonGroup, withOffset: 10)
+        talkLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelBaloonGroup, withOffset: -10)
         
         talkLabelImageView.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup)
         talkLabelImageView.autoPinEdge(.right, to: .right, of: talkLabelBaloonGroup)

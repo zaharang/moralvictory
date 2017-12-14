@@ -34,6 +34,7 @@ class GroupChatListCell: UITableViewCell, Shakable {
         return label;
     }()
     var profileImageView = UIImageView()
+    let baloonImgInsets : UIEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
