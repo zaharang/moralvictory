@@ -203,7 +203,15 @@ class GroupChatListViewController: UIViewController {
     }
 
     func moveToIndex(index: Int) {
-        let indexPath = IndexPath(row:index, section: 0)
+        guard let list = talkList else { return }
+        var row = 0
+        for i in 0..<list.count {
+            if (list[i].messageId == index) {
+                row = i
+                break
+            }
+        }
+        let indexPath = IndexPath(row:row, section: 0)
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             self?.shakeCell(indexPath: indexPath)
