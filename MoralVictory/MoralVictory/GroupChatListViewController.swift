@@ -34,6 +34,8 @@ class GroupChatListViewController: UIViewController {
     var bottomBarView:UIView!
     var bottomBarBackgroundImageView:UIImageView!
     var topBarView:UIImageView!
+    var participantLabel: UILabel!
+
     var textField:UITextField = {
         let view = UITextField(frame: .zero)
         return view
@@ -119,7 +121,31 @@ class GroupChatListViewController: UIViewController {
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         self.view.addSubview(topBarView)
 
+        participantLabel = UILabel()
+        participantLabel.frame = CGRect(x: 50, y: 30, width: topBarView.frame.width,
+                                        height: topBarView.frame.height - 20)
+        participantLabel.lineBreakMode = .byWordWrapping
+        participantLabel.textColor = UIColor.white
+        participantLabel.font = UIFont.systemFont(ofSize: 15)
+//        participantLabel.autoPinEdge(.top, to: .top, of: topBarView, withOffset: 20)
+//        participantLabel.autoPinEdge(.bottom, to: .bottom, of: topBarView)
+//        participantLabel.frame.origin.x = 50
+//        participantLabel.frame.origin.y = 20
 
+//        participantLabel.autoSetDimension(.width, toSize: topBarView.frame.width - 50)
+//        participantLabel.autoSetDimension(.height, toSize: topBarView.frame.height - 20)
+
+//        let partiLabelString = "\(TalkDataHelper.shared.dumpUsers[1]), \(TalkDataHelper.shared.dumpUsers[2]), \(TalkDataHelper.shared.dumpUsers[3]), \(TalkDataHelper.shared.dumpUsers[4])"
+
+        let partiLabelString = "Zaharang, Hermetic, Shrimp Chip, Woosom"
+
+//        for (key, value) in TalkDataHelper.shared.dumpUsers {
+//            partiLabelString += value
+//            partiLabelString += ", "
+//        }
+
+        participantLabel.text = partiLabelString
+        topBarView.addSubview(participantLabel)
     }
 
     func sendPush() {
