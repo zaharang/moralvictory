@@ -37,6 +37,7 @@ class GroupChatListCell: UITableViewCell, Shakable {
         return imgView
     }()
     var talkLabel = UILabel()
+    var profileNameLabel = UILabel()
     var profileImageView = UIImageView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -49,9 +50,30 @@ class GroupChatListCell: UITableViewCell, Shakable {
         talkLabelGroup.addSubview(talkLabel)
         self.contentView.addSubview(talkLabelGroup)
 
+        contentView.addSubview(profileNameLabel)
         self.contentView.addSubview(profileImageView)
         self.contentView.clipsToBounds = true
         addSwipeDelegate()
+        
+        profileNameLabel.numberOfLines = 0
+        profileNameLabel.lineBreakMode = .byWordWrapping
+        
+        talkLabel.numberOfLines = 0
+        talkLabel.lineBreakMode = .byWordWrapping
+        
+        profileImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 20)
+        profileImageView.autoSetDimension(.width, toSize: imageViewSize)
+        profileImageView.autoSetDimension(.height, toSize: imageViewSize)
+        profileImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        
+        profileNameLabel.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 20)
+        profileNameLabel.autoPinEdge(.right, to: .right, of: contentView)
+        profileNameLabel.autoPinEdge(.top, to: .top, of: contentView)
+        
+        talkLabel.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 20)
+        talkLabel.autoPinEdge(.right, to: .right, of: contentView)
+        talkLabel.autoPinEdge(.top, to: .bottom, of: profileNameLabel)
+        talkLabel.autoPinEdge(.bottom, to: .bottom, of: contentView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,22 +84,22 @@ class GroupChatListCell: UITableViewCell, Shakable {
         super.layoutSubviews()
         
         
-        profileImageView.frame = CGRect(x: 20, y: (frame.height - imageViewSize)/2, width: imageViewSize, height: imageViewSize)
-        let textViewX = profileImageView.frame.origin.x + imageViewSize + 20
-
-        let imgGap = CGFloat(5)
-        talkLabelGroup.frame = CGRect(x: textViewX, y: 0, width: frame.width - textViewX, height: frame.height)
-        talkLabelImageView.frame = CGRect(x: 0, y: imgGap,
-                                          width: talkLabelGroup.frame.width,
-                                          height: talkLabelGroup.frame.height - imgGap*2)
-
-        let textGap = CGFloat(10)
-        talkLabel.frame = CGRect(x: textGap, y: textGap,
-                                 width: talkLabelGroup.frame.width - textGap*2,
-                                 height: talkLabelGroup.frame.height - textGap*2)
-
-        talkLabel.backgroundColor = UIColor(white: 0, alpha: 0)
-
+//        profileImageView.frame = CGRect(x: 20, y: (frame.height - imageViewSize)/2, width: imageViewSize, height: imageViewSize)
+//        let textViewX = profileImageView.frame.origin.x + imageViewSize + 20
+//
+//        let imgGap = CGFloat(5)
+//        talkLabelGroup.frame = CGRect(x: textViewX, y: 0, width: frame.width - textViewX, height: frame.height)
+//        talkLabelImageView.frame = CGRect(x: 0, y: imgGap,
+//                                          width: talkLabelGroup.frame.width,
+//                                          height: talkLabelGroup.frame.height - imgGap*2)
+//
+//        let textGap = CGFloat(10)
+//        talkLabel.frame = CGRect(x: textGap, y: textGap,
+//                                 width: talkLabelGroup.frame.width - textGap*2,
+//                                 height: talkLabelGroup.frame.height - textGap*2)
+//
+//        talkLabel.backgroundColor = UIColor(white: 0, alpha: 0)
+//
         let img = UIImage(named: "baloon_left")
         let imgInsets : UIEdgeInsets = UIEdgeInsetsMake(20, 30, 20, 30)
 
@@ -130,12 +152,15 @@ class GroupChatListViewController: UIViewController {
         topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         self.view.addSubview(topBarView)
         
-        let tableViewFrame = CGRect(x: 0, y: topBarHeight, width: view.frame.width, height: view.frame.height - topBarHeight - bottomBarHeight)
-        tableView = UITableView(frame: tableViewFrame, style: UITableViewStyle.plain)
+        tableView = UITableView()
+        self.view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: topBarHeight, left: 0, bottom: bottomBarHeight, right: 0))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        self.view.addSubview(tableView)
+        tableView.estimatedRowHeight = 300
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(GroupChatListCell.self, forCellReuseIdentifier: "GroupChatListCell")
 
         fetchData()
@@ -190,15 +215,11 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
             return 0
         }
 
-        return ignoreLists.contains(talkItem.userId) ? 0 : 50
+        return ignoreLists.contains(talkItem.userId) ? 0 : UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return talkList?.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -209,7 +230,8 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         }
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
-        cell.talkLabel.text = talkItem.userName
+        cell.profileNameLabel.text = talkItem.userName
+        cell.talkLabel.text = talkItem.content
         cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
 
         cell.delegate = self
