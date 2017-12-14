@@ -138,7 +138,7 @@ class GroupChatListViewController: UIViewController {
 
 //        let partiLabelString = "RillakKuma, Hermetic, Shrimp Chip, Woosom"
 
-//        for (key, value) in TalkDataHelper.shared.dumpUsers {
+//        for (key, value) in TalkDataHelper.shared.dumpUsers` {
 //            partiLabelString += value
 //            partiLabelString += ", "
 //        }
@@ -265,7 +265,7 @@ class GroupChatListViewController: UIViewController {
                             }
 
                             let newMessage = Talk(userId: idNum, userName: userName,
-                                                  content: msgString, receivedTime: Date())
+                                                  content: msgString, receivedTime: Date(), isSecret: isSecret)
 
 
                             talkList?.append(newMessage)

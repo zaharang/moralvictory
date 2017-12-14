@@ -13,7 +13,7 @@ class GroupChatListCellOtherSecret: GroupChatListCellOther {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let img = UIImage(named: "baloon_right")?.withRenderingMode(.alwaysTemplate)
+        let img = UIImage(named: "baloon_left")?.withRenderingMode(.alwaysTemplate)
         talkLabelImageView.image = img?.resizableImage(withCapInsets: baloonImgInsets, resizingMode: .stretch)
         talkLabelImageView.tintColor = UIColor.black
         talkLabelImageView.alpha = 0.7
