@@ -134,9 +134,9 @@ class GroupChatListViewController: UIViewController {
 //        participantLabel.autoSetDimension(.width, toSize: topBarView.frame.width - 50)
 //        participantLabel.autoSetDimension(.height, toSize: topBarView.frame.height - 20)
 
-//        let partiLabelString = "\(TalkDataHelper.shared.dumpUsers[1]), \(TalkDataHelper.shared.dumpUsers[2]), \(TalkDataHelper.shared.dumpUsers[3]), \(TalkDataHelper.shared.dumpUsers[4])"
+        let partiLabelString = "\(TalkDataHelper.shared.dumpUsers[1].1), \(TalkDataHelper.shared.dumpUsers[2].1), \(TalkDataHelper.shared.dumpUsers[3].1), \(TalkDataHelper.shared.dumpUsers[4].1)"
 
-        let partiLabelString = "Zaharang, Hermetic, Shrimp Chip, Woosom"
+//        let partiLabelString = "RillakKuma, Hermetic, Shrimp Chip, Woosom"
 
 //        for (key, value) in TalkDataHelper.shared.dumpUsers {
 //            partiLabelString += value
