@@ -31,7 +31,7 @@ struct Talk {
     
     func getReceivedTimeString() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm:ss"
+        dateFormatter.dateFormat = "HH:mm"
         
         return dateFormatter.string(from: receivedTime)
     }
