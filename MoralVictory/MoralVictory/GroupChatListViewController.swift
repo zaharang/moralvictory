@@ -221,7 +221,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return talkList?.count ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = GroupChatListCell(style: .default, reuseIdentifier: "GroupChatListCell")
 
