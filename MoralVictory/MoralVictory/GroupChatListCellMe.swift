@@ -12,6 +12,11 @@ class GroupChatListCellMe: GroupChatListCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        let img = UIImage(named: "baloon_right")
+        let imgInsets : UIEdgeInsets = UIEdgeInsetsMake(20, 30, 20, 30)
+
+        talkLabelImageView.image = img?.resizableImage(withCapInsets: imgInsets, resizingMode: .stretch)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -23,8 +28,8 @@ class GroupChatListCellMe: GroupChatListCell {
         
         talkLabelGroup.autoPinEdge(.left, to: .left, of: contentView)
         talkLabelGroup.autoPinEdge(.right, to: .right, of: contentView, withOffset: 5)
-        talkLabelGroup.autoPinEdge(.top, to: .top, of: contentView)
-        talkLabelGroup.autoPinEdge(.bottom, to: .bottom, of: contentView)
+        talkLabelGroup.autoPinEdge(.top, to: .top, of: contentView, withOffset: 10)
+        talkLabelGroup.autoPinEdge(.bottom, to: .bottom, of: contentView, withOffset: -10)
         //
         //        talkLabelBaloonGroup.autoPinEdge(.left, to: .left, of: talkLabelGroup)
         //        talkLabelBaloonGroup.autoPinEdge(.right, to: .right, of: talkLabelGroup)
@@ -34,20 +39,20 @@ class GroupChatListCellMe: GroupChatListCell {
         // height 16.707... is one line
         if contentStringExpectRect.height < 17 {
             talkLabelBaloonGroup.autoPinEdge(.right, to: .right, of: talkLabelGroup)
-            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel)
+            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel, withOffset: 5)
             talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
         }
         else {
             talkLabelBaloonGroup.autoPinEdge(.left, to: .left, of: talkLabelGroup)
             talkLabelBaloonGroup.autoPinEdge(.right, to: .right, of: talkLabelGroup)
-            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel)
+            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel, withOffset: 5)
             talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
         }
         
         talkLabel.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup, withOffset: 10)
         talkLabel.autoPinEdge(.right, to: .right, of: talkLabelBaloonGroup, withOffset: -10)
-        talkLabel.autoPinEdge(.top, to: .top, of: talkLabelBaloonGroup)
-        talkLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelBaloonGroup)
+        talkLabel.autoPinEdge(.top, to: .top, of: talkLabelBaloonGroup, withOffset: 5)
+        talkLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelBaloonGroup, withOffset: -5)
         
         talkLabelImageView.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup)
         talkLabelImageView.autoPinEdge(.right, to: .right, of: talkLabelBaloonGroup)

@@ -128,12 +128,12 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 
         /////////////////////////////////////////////////////////////////
         // for debugging
-//        let randomNo: UInt32 = arc4random_uniform(2);
-//        if randomNo == 1 {
-//            isBaloonMe = true
-//        } else {
-//            isBaloonMe = false
-//        }
+        let randomNo: UInt32 = arc4random_uniform(2);
+        if randomNo == 1 {
+            isBaloonMe = true
+        } else {
+            isBaloonMe = false
+        }
         /////////////////////////////////////////////////////////////////
 
         if isBaloonMe == true {

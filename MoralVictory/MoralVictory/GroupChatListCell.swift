@@ -26,13 +26,18 @@ class GroupChatListCell: UITableViewCell, Shakable {
         return imgView
     }()
     var talkLabel = UILabel()
-    var profileNameLabel = UILabel()
+    lazy var profileNameLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.white
+
+        return label;
+    }()
     var profileImageView = UIImageView()
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        //        self.contentView.addSubview(talkLabel)
         talkLabelGroup.addSubview(profileNameLabel)
 
         talkLabelBaloonGroup.addSubview(talkLabelImageView)
@@ -58,32 +63,6 @@ class GroupChatListCell: UITableViewCell, Shakable {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-
-        //        profileImageView.frame = CGRect(x: 20, y: (frame.height - imageViewSize)/2, width: imageViewSize, height: imageViewSize)
-        //        let textViewX = profileImageView.frame.origin.x + imageViewSize + 20
-        //
-        //        let imgGap = CGFloat(5)
-        //        talkLabelGroup.frame = CGRect(x: textViewX, y: 0, width: frame.width - textViewX, height: frame.height)
-        //        talkLabelImageView.frame = CGRect(x: 0, y: imgGap,
-        //                                          width: talkLabelGroup.frame.width,
-        //                                          height: talkLabelGroup.frame.height - imgGap*2)
-        //
-        //        let textGap = CGFloat(10)
-        //        talkLabel.frame = CGRect(x: textGap, y: textGap,
-        //                                 width: talkLabelGroup.frame.width - textGap*2,
-        //                                 height: talkLabelGroup.frame.height - textGap*2)
-        //
-        //        talkLabel.backgroundColor = UIColor(white: 0, alpha: 0)
-        //
-        let img = UIImage(named: "baloon_left")
-        let imgInsets : UIEdgeInsets = UIEdgeInsetsMake(20, 30, 20, 30)
-
-        talkLabelImageView.image = img?.resizableImage(withCapInsets: imgInsets, resizingMode: .stretch)
     }
 
     func addSwipeDelegate() {
