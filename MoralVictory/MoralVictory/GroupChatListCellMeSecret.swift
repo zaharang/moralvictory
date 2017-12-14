@@ -13,7 +13,12 @@ class GroupChatListCellMeSecret: GroupChatListCellMe {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        talkLabel.textColor = UIColor.blue
+        let img = UIImage(named: "baloon_right")?.withRenderingMode(.alwaysTemplate)
+        talkLabelImageView.image = img?.resizableImage(withCapInsets: baloonImgInsets, resizingMode: .stretch)
+        talkLabelImageView.tintColor = UIColor.black
+        talkLabelImageView.alpha = 0.7
+        
+        talkLabel.textColor = UIColor.white
     }
 
     required init?(coder aDecoder: NSCoder) {
