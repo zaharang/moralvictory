@@ -40,7 +40,7 @@ class GroupChatListViewController: UIViewController {
         return IndexChatView(frame: .zero)
     }()
 
-    var isBaloonMe: Bool = true
+    var isBaloonMe: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,6 +145,8 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         guard let talkItem = talkList?[indexPath.row] else {
             return cell
         }
+        
+        cell.setupLayoutConstraint(withTalkItem: talkItem)
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
         cell.profileNameLabel.text = talkItem.userName

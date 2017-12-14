@@ -8,6 +8,9 @@
 
 import UIKit
 
+let profileNameFont = UIFont.systemFont(ofSize: 10)
+let talkLabelFont = UIFont.systemFont(ofSize: 14)
+
 class GroupChatListCell: UITableViewCell, Shakable {
     var delegate: SwipeDelegate?
 
@@ -47,6 +50,10 @@ class GroupChatListCell: UITableViewCell, Shakable {
 
         talkLabel.numberOfLines = 0
         talkLabel.lineBreakMode = .byWordWrapping
+    }
+    
+    func setupLayoutConstraint(withTalkItem talkItem: Talk) {
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
