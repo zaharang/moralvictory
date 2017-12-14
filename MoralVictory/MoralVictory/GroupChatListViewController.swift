@@ -22,8 +22,6 @@ protocol SwipeDelegate {
     func swipe(cell: UITableViewCell, direction: SwipeDirection)
 }
 
-let meUser = (0, "testMe")
-
 class GroupChatListViewController: UIViewController {
 
     let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
@@ -176,8 +174,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: GroupChatListCell
-
+    
         /////////////////////////////////////////////////////////////////
         // for debugging
 //        let randomNo: UInt32 = arc4random_uniform(2);
@@ -188,18 +185,20 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
 //        }
         /////////////////////////////////////////////////////////////////
 
-        if isBaloonMe == true {
+
+        guard let talkItem = talkList?[indexPath.row] else {
+            return UITableViewCell()
+        }
+        
+        let cell: GroupChatListCell
+        if talkItem.userId == 0 {
             cell = GroupChatListCellMe(style: .default, reuseIdentifier: "GroupChatListCell")
             // debugging
-//            cell.isSecretTalk = true
+            //            cell.isSecretTalk = true
         } else {
             cell = GroupChatListCellOther(style: .default, reuseIdentifier: "GroupChatListCell")
             // debugging
-//            cell.isSecretTalk = false
-        }
-
-        guard let talkItem = talkList?[indexPath.row] else {
-            return cell
+            //            cell.isSecretTalk = false
         }
         
         cell.setupLayoutConstraint(withTalkItem: talkItem)
