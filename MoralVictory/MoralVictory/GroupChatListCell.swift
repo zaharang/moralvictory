@@ -39,6 +39,8 @@ class GroupChatListCell: UITableViewCell, Shakable {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        self.selectionStyle = .none
+
         talkLabelGroup.addSubview(profileNameLabel)
 
         talkLabelBaloonGroup.addSubview(talkLabelImageView)
