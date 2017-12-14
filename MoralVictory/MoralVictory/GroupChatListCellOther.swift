@@ -26,9 +26,9 @@ class GroupChatListCellOther: GroupChatListCell {
         let contentStringExpectRect = NSString(string: talkItem.content).boundingRect(with: CGSize(width: frame.width - imageViewSize - 10, height: CGFloat.greatestFiniteMagnitude/2), options: [NSStringDrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font:talkLabelFont], context: nil)
         
         profileImageView.autoPinEdge(.left, to: .left, of: contentView, withOffset: 5)
+        profileImageView.autoPinEdge(.top, to: .top, of: talkLabelGroup)
         profileImageView.autoSetDimension(.width, toSize: imageViewSize)
         profileImageView.autoSetDimension(.height, toSize: imageViewSize)
-        profileImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
         
         talkLabelGroup.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 5)
         talkLabelGroup.autoPinEdge(.right, to: .right, of: contentView)
@@ -39,17 +39,18 @@ class GroupChatListCellOther: GroupChatListCell {
         profileNameLabel.autoPinEdge(.right, to: .right, of: talkLabelGroup)
         profileNameLabel.autoPinEdge(.top, to: .top, of: talkLabelGroup)
         
+        talkLabelBaloonGroup.autoPinEdge(.left, to: .left, of: talkLabelGroup)
+        talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel, withOffset: 5)
+        talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
+        
+        receivedTimeLabel.autoPinEdge(.left, to: .right, of: talkLabelBaloonGroup)
+        receivedTimeLabel.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
+        
         // height 16.707... is one line
         if contentStringExpectRect.height < 17 {
-            talkLabelBaloonGroup.autoPinEdge(.left, to: .left, of: talkLabelGroup)
-            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel, withOffset: 5)
-            talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
         }
         else {
-            talkLabelBaloonGroup.autoPinEdge(.left, to: .left, of: talkLabelGroup)
-            talkLabelBaloonGroup.autoPinEdge(.right, to: .right, of: talkLabelGroup)
-            talkLabelBaloonGroup.autoPinEdge(.top, to: .bottom, of: profileNameLabel, withOffset: 5)
-            talkLabelBaloonGroup.autoPinEdge(.bottom, to: .bottom, of: talkLabelGroup)
+            receivedTimeLabel.autoPinEdge(.right, to: .right, of: talkLabelGroup)
         }
         
         talkLabel.autoPinEdge(.left, to: .left, of: talkLabelBaloonGroup, withOffset: 15)

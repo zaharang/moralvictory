@@ -9,6 +9,8 @@
 import UIKit
 
 let profileNameFont = UIFont.systemFont(ofSize: 10)
+let receivedTimeFont = UIFont.systemFont(ofSize: 10)
+let readFont = UIFont.systemFont(ofSize: 10)
 let talkLabelFont = UIFont.systemFont(ofSize: 14)
 
 class GroupChatListCell: UITableViewCell, Shakable {
@@ -34,6 +36,9 @@ class GroupChatListCell: UITableViewCell, Shakable {
         return label;
     }()
     var profileImageView = UIImageView()
+    var receivedTimeLabel = UILabel()
+    var readLabel = UILabel()
+    
     let baloonImgInsets : UIEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -46,6 +51,8 @@ class GroupChatListCell: UITableViewCell, Shakable {
         talkLabelBaloonGroup.addSubview(talkLabelImageView)
         talkLabelBaloonGroup.addSubview(talkLabel)
         talkLabelGroup.addSubview(talkLabelBaloonGroup)
+        talkLabelGroup.addSubview(receivedTimeLabel)
+        talkLabelGroup.addSubview(readLabel)
 
         self.contentView.addSubview(talkLabelGroup)
 
@@ -54,10 +61,19 @@ class GroupChatListCell: UITableViewCell, Shakable {
         addSwipeDelegate()
 
         profileNameLabel.numberOfLines = 0
+        profileNameLabel.font = profileNameFont
         profileNameLabel.lineBreakMode = .byWordWrapping
 
         talkLabel.numberOfLines = 0
+        talkLabel.font = talkLabelFont
         talkLabel.lineBreakMode = .byWordWrapping
+        
+        readLabel.numberOfLines = 1
+        readLabel.text = "읽음 4"
+        readLabel.font = readFont
+        
+        receivedTimeLabel.numberOfLines = 1
+        receivedTimeLabel.font = receivedTimeFont
     }
     
     func setupLayoutConstraint(withTalkItem talkItem: Talk) {

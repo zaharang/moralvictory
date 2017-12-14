@@ -157,6 +157,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.setupLayoutConstraint(withTalkItem: talkItem)
 
         cell.profileImageView.image = ignoreLists.contains(talkItem.userId) ? nil : Talk.images[talkItem.userId]
+        cell.receivedTimeLabel.text = talkItem.getReceivedTimeString()
         cell.profileNameLabel.text = talkItem.userName
         cell.talkLabel.text = talkItem.content
         cell.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
