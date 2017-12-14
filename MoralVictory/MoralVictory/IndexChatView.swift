@@ -30,6 +30,8 @@ extension Shakable where Self: UIView {
 class IndexChatCell: UITableViewCell {
     lazy var talkLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14.5)
+        label.numberOfLines = 0
         return label
     }()
 
@@ -55,7 +57,12 @@ class IndexChatCell: UITableViewCell {
         talkBackView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
         talkBackView.autoPinEdge(toSuperviewEdge: .top, withInset: 5)
         talkBackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 5)
-        talkBackView.layer.masksToBounds = true
+        talkBackView.layer.shadowColor = UIColor.black.cgColor
+        talkBackView.layer.shadowRadius = 1
+        talkBackView.layer.shadowOpacity = 0.5
+        talkBackView.layer.shadowOffset = CGSize(width: 2, height: 2)
+
+//        talkBackView.layer.masksToBounds = true
         talkBackView.layer.backgroundColor = UIColor.white.cgColor
         talkBackView.layer.cornerRadius = 5
 
@@ -79,16 +86,30 @@ class IndexChatView: UIView {
         return UIView(frame: .zero)
     }()
 
+    lazy var topPanel: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0.30, green: 0.40, blue: 0.60, alpha: 1.0)
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowRadius = 1
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        return view
+    }()
+
     lazy var profileImageView: UIImageView = {
         return UIImageView(frame: .zero)
     }()
 
     lazy var nickLabel: UILabel = {
-        return UILabel()
+        let label = UILabel()
+        label.textColor = .white
+        return label
     }()
 
     lazy var closeButton: UIButton = {
-        return UIButton()
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "btn_nor"), for: .normal)
+        return button
     }()
 
     lazy var tableView: UITableView = {
@@ -116,7 +137,7 @@ class IndexChatView: UIView {
 
     var messageId: Int = 0
 
-    let bgColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
+    let bgColor = UIColor(red: 0.37, green: 0.47, blue: 0.67, alpha: 1.0)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -130,23 +151,27 @@ class IndexChatView: UIView {
     func setupView() {
         backgroundColor = bgColor
         addSubview(innerPanel)
-        innerPanel.addSubview(closeButton)
-        innerPanel.addSubview(profileImageView)
-        innerPanel.addSubview(nickLabel)
         innerPanel.addSubview(tableView)
+        addSubview(topPanel)
+        topPanel.addSubview(closeButton)
+        topPanel.addSubview(profileImageView)
+        topPanel.addSubview(nickLabel)
 
         innerPanel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+        topPanel.autoPinEdge(toSuperviewEdge: .top)
+        topPanel.autoPinEdge(toSuperviewEdge: .left)
+        topPanel.autoPinEdge(toSuperviewEdge: .right)
+        topPanel.autoSetDimension(.height, toSize: 48)
 
         closeButton.autoSetDimensions(to: CGSize(width: 32, height: 32))
-        closeButton.backgroundColor = .blue
         closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 30)
+        closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
         closeButton.rx.tap.bind{ [weak self] _ in
             self?.closeFunction?()
         }.disposed(by: disposeBag)
 
         profileImageView.autoSetDimensions(to: CGSize(width: 32, height: 32))
-        profileImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 30)
+        profileImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
         profileImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
 
         nickLabel.autoPinEdge(.left, to: .right, of: profileImageView, withOffset: 10)
@@ -162,6 +187,10 @@ class IndexChatView: UIView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.black.cgColor
+
     }
 
     func scrollToMessage(){
@@ -196,7 +225,7 @@ extension IndexChatView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return UITableViewAutomaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

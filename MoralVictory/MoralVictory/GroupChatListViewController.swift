@@ -24,7 +24,7 @@ protocol SwipeDelegate {
 
 class GroupChatListViewController: UIViewController {
 
-    let HALF_HEIGHT = UIScreen.main.bounds.height / 2
+    let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
 
     var talkList: [Talk]?
 
@@ -45,21 +45,17 @@ class GroupChatListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bottomBarView = UIImageView(image: UIImage(named: "bottom_bar"))
-        bottomBarView.frame = CGRect(x: 0, y: view.frame.height - bottomBarHeight, width: view.frame.width, height: bottomBarHeight)
-        self.view.addSubview(bottomBarView)
-
-        topBarView = UIImageView(image: UIImage(named: "navi_bar"))
-        topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
-        self.view.addSubview(topBarView)
-        
         tableView = UITableView()
         self.view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: topBarHeight, left: 0, bottom: bottomBarHeight, right: 0))
+        topChatListViewContraint = tableView.autoPinEdge(toSuperviewEdge: .top, withInset: topBarHeight)
+        tableView.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomBarHeight)
+        tableView.autoPinEdge(toSuperviewEdge: .left)
+        tableView.autoPinEdge(toSuperviewEdge: .right)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(red: 0.4, green: 0.52, blue: 0.72, alpha: 1.0)
         tableView.estimatedRowHeight = 300
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(GroupChatListCell.self, forCellReuseIdentifier: "GroupChatListCell")
@@ -68,12 +64,20 @@ class GroupChatListViewController: UIViewController {
 
         self.view.addSubview(chatListView)
 
-        topChatListViewContraint = chatListView.autoPinEdge(toSuperviewEdge: .top, withInset: -HALF_HEIGHT)
+        chatListView.autoPinEdge(.bottom, to: .top, of: tableView)
         chatListView.autoPinEdge(toSuperviewEdge: .left)
         chatListView.autoPinEdge(toSuperviewEdge: .right)
-        chatListView.autoSetDimension(.height, toSize: HALF_HEIGHT - 30)
+        chatListView.autoSetDimension(.height, toSize: topChatListHeight)
         chatListView.closeFunction = closeTopView
         chatListView.moveToIndex = moveToIndex
+
+        bottomBarView = UIImageView(image: UIImage(named: "bottom_bar"))
+        bottomBarView.frame = CGRect(x: 0, y: view.frame.height - bottomBarHeight, width: view.frame.width, height: bottomBarHeight)
+        self.view.addSubview(bottomBarView)
+
+        topBarView = UIImageView(image: UIImage(named: "navi_bar"))
+        topBarView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
+        self.view.addSubview(topBarView)
     }
 
     func fetchData() {
@@ -84,7 +88,7 @@ class GroupChatListViewController: UIViewController {
     func closeTopView() {
         UIView.animate(withDuration: 0.2) { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.topChatListViewContraint?.constant = -strongSelf.HALF_HEIGHT
+            strongSelf.topChatListViewContraint?.constant = topBarHeight
             strongSelf.view.layoutIfNeeded()
         }
     }
@@ -122,7 +126,7 @@ extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return talkList?.count ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: GroupChatListCell
 
@@ -206,9 +210,13 @@ extension GroupChatListViewController: SwipeDelegate {
         chatListView.profileImage = Talk.images[talkItem.userId]
         chatListView.indexChatList = talkList?.filter { $0.userId == talkItem.userId }
         UIView.animate(withDuration: 0.5) { [weak self] in
-            self?.topChatListViewContraint?.constant = 0
-            self?.view.layoutIfNeeded()
+            self?.moveDownChatList()
         }
+    }
+
+    func moveDownChatList(){
+        topChatListViewContraint?.constant = topBarHeight + topChatListHeight
+        view.layoutIfNeeded()
     }
 
     func ignoreUser(id: Int){
