@@ -22,6 +22,8 @@ protocol SwipeDelegate {
     func swipe(cell: UITableViewCell, direction: SwipeDirection)
 }
 
+let meUser = (0, "testMe")
+
 class GroupChatListViewController: UIViewController {
 
     let topChatListHeight = UIScreen.main.bounds.height / 2 - 30
@@ -136,7 +138,17 @@ class GroupChatListViewController: UIViewController {
 }
 
 extension GroupChatListViewController: UITextFieldDelegate {
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: textField.text ?? "", receivedTime: Date())
+
+        talkList?.append(newMessage)
+        tableView.reloadData()
+        
+        textField.text = ""
+        
+        return true
+    }
 }
 
 extension GroupChatListViewController: UITableViewDelegate, UITableViewDataSource {
