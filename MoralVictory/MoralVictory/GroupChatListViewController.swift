@@ -263,9 +263,10 @@ class GroupChatListViewController: UIViewController {
                                 contentStr = msgString
                                 isSecret = false
                             }
-                            
-                            let newMessage = Talk(messageId: 300, userId: idNum, userName: userName,
-                                                  content: contentStr, receivedTime: Date(), isSecret: isSecret)
+
+                            let newMessage = Talk(userId: idNum, userName: userName,
+                                                  content: msgString, receivedTime: Date())
+
 
                             talkList?.append(newMessage)
                             tableView.reloadData()
@@ -330,7 +331,7 @@ extension GroupChatListViewController: UITextFieldDelegate {
         
         
         sendPush(text: sendText)
-        let newMessage = Talk(messageId: 300, userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
+        let newMessage = Talk(userId: meUser.0, userName: meUser.1, content: sendText, receivedTime: Date(), isSecret: isSecret)
 
         talkList?.append(newMessage)
         tableView.reloadData()
